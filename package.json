@@ -9,6 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hapi": "^16.6.2"
+    "handlebars": "^4.0.10",
+    "hapi": "^16.6.2",
+    "hapi-auth-cookie": "^7.0.0",
+    "inert": "^4.2.1",
+    "joi": "^13.0.0",
+    "mongoose": "^4.12.2",
+    "mongoose-seeder": "^1.2.1",
+    "vision": "^4.1.1"
   }
 }

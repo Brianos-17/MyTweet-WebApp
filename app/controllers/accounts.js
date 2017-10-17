@@ -9,11 +9,20 @@ exports.main = {
   },
 };
 
-exports.signUp = {
+exports.signup = {
   auth: false,
   handler: function(req, res) {
     res.view('signup', {
       title: 'Sign Up for MyTweet'
+    });
+  },
+};
+
+exports.login = {
+  auth: false,
+  handler: function(req, res) {
+    res.view('login', {
+      title: "Log In to MyTweet"
     });
   },
 };

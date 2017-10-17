@@ -8,3 +8,12 @@ exports.main = {
     });
   },
 };
+
+exports.signUp = {
+  auth: false,
+  handler: function(req, res) {
+    res.view('signup', {
+      title: 'Sign Up for MyTweet'
+    });
+  },
+};

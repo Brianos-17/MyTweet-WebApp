@@ -1,5 +1,7 @@
 'use strict';
 
+const User = require('../models/user');
+
 exports.main = {
   auth: false,
   handler: function (req, res) {

@@ -72,3 +72,18 @@ exports.logout = {
     res.redirect('/');
   },
 };
+
+exports.account = {
+  handler: function(req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne({email: userEmail}).then(currentUser => {
+      res.view('settings', {
+        title: 'Account Settings',
+        user: currentUser,
+      });
+    }).catch(err => {
+      console.log('Error access account settings: ' + err);
+      res.redirect('/home');
+    });
+  },
+};

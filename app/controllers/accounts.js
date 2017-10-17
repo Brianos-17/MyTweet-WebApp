@@ -54,7 +54,7 @@ exports.authenticate = {
           loggedIn: true,
         loggedInUser: user.email,
         });
-        res.redirect('/home');
+        res.redirect('/dashboard');
       } else {
         res.redirect('/login');
       }

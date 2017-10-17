@@ -64,3 +64,11 @@ exports.authenticate = {
     });
   },
 };
+
+exports.logout = {
+  auth: false,
+  handler: function(req,res) {
+    req.cookieAuth.clear();
+    res.redirect('/');
+  },
+};

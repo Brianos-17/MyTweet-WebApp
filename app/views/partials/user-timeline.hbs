@@ -1,4 +1,3 @@
-<h3 class="ui center aligned header"> {{user.firstName}}'s Timeline </h3>
 
 {{#each tweet}}
     <table class="ui fixed centre aligned table">
@@ -16,7 +15,9 @@
                 <td>Test</td>
                 <td>{{message}}</td>
                 <td>{{date}}</td>
-                <td>Delete button</td>
+                <td><a href="/removeTweet/{{_id}}">
+                    <i class=" large red trash icon"></i>
+                </a></td>
             </tr>
         </div>
         </tbody>

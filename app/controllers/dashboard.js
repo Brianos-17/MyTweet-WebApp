@@ -9,10 +9,17 @@ const Tweet = require('../models/tweet');
 
 exports.dashboard = {
   handler: function (req, res) {
-    res.view('home', {
-      title: 'MyTweet Homepage'
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne( {email: userEmail} ).then(currentUser => {
+      res.view('home', {
+        title: 'MyTweet Homepage',
+        user: currentUser,
     });
-  }
+    }).catch(err => {
+      console.log('Error loading dashboard: ' + err);
+      res.redirect('/');
+    });
+  },
 };
 
 exports.addTweet = {

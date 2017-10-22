@@ -1,8 +1,9 @@
 {{> menu id ="home"}}
 
 <section class="ui raised segment">
-    <header class="ui center aligned header">
+    <h3 class="ui center aligned header">
         Welcome back {{user.firstName}}!
-    </header>
+    </h3>
     {{> new-tweet}}
+    {{> user-timeline}}
 </section>

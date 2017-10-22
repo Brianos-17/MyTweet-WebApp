@@ -1,0 +1,24 @@
+<h3 class="ui center aligned header"> {{user.firstName}}'s Timeline </h3>
+
+{{#each tweet}}
+    <table class="ui fixed centre aligned table">
+        <thead>
+        <tr>
+            <th class="one wide"> User Icon </th>
+            <th class="six wide"> Tweet </th>
+            <th class="two wide"> Date </th>
+            <th class="one wide"> Delete </th>
+        </tr>
+        </thead>
+        <tbody>
+        <div class="ui bulleted list">
+            <tr>
+                <td>Test</td>
+                <td>{{message}}</td>
+                <td>{{date}}</td>
+                <td>Delete button</td>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+{{/each}}

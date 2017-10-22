@@ -11,9 +11,12 @@ exports.dashboard = {
   handler: function (req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne( {email: userEmail} ).then(currentUser => {
-      res.view('home', {
-        title: 'MyTweet Homepage',
-        user: currentUser,
+      Tweet.find({ user: currentUser._id}).then(tweetList => {
+        res.view('home', {
+          title: 'MyTweet Homepage',
+          user: currentUser,
+          tweet: tweetList,
+      });
     });
     }).catch(err => {
       console.log('Error loading dashboard: ' + err);

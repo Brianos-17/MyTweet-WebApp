@@ -11,4 +11,5 @@ module.exports = [
 
   { method: 'POST',   path: '/register',      config: Accounts.register},
   { method: 'POST',   path: '/authenticate',  config: Accounts.authenticate},
+  { method: 'POST',   path: '/addTweet',      config: Dashboard.addTweet},
 ];

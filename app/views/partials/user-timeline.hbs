@@ -6,7 +6,9 @@
             <th class="one wide"> User Icon </th>
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
-            <th class="one wide"> Delete </th>
+            {{#unless ../globalTimeline}}
+                    <th class="one wide"> Delete </th>
+            {{/unless}}
         </tr>
         </thead>
         <tbody>
@@ -15,9 +17,11 @@
                 <td>Test</td>
                 <td>{{message}}</td>
                 <td>{{date}}</td>
-                <td><a href="/removeTweet/{{_id}}">
-                    <i class=" large red trash icon"></i>
-                </a></td>
+                {{#unless ../globalTimeline}}
+                    <td><a href="/removeTweet/{{_id}}">
+                        <i class=" large red trash icon"></i>
+                    </a></td>
+                {{/unless}}
             </tr>
         </div>
         </tbody>

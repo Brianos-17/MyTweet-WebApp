@@ -32,6 +32,7 @@ exports.globalTimeline = {
       res.view('globalTimeline', {
         title: 'MyTweet Global Timeline',
         tweet: tweetList,
+        globalTimeline: true,
       });
     }).catch(err => {
       console.log("Error loading timeline: " + err);
@@ -50,8 +51,8 @@ exports.addTweet = {
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       userId = user._id;
       tweet = new Tweet(message);
-      tweet.user = userId;
       tweet.date = date;
+      tweet.user = userId;
       return tweet.save();
     }).then(newTweet => {
       res.redirect('/dashboard');

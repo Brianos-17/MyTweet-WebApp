@@ -46,7 +46,7 @@ exports.addTweet = {
     const userEmail = req.auth.credentials.loggedInUser;
     let userId = null;
     let tweet = null;
-    User.findOne({ email: userEmail}).then(user => {
+    User.findOne({ email: userEmail }).then(user => {
       let message = req.payload;
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       userId = user._id;
@@ -55,6 +55,7 @@ exports.addTweet = {
       tweet.user = userId;
       return tweet.save();
     }).then(newTweet => {
+      console.log('New tweet added:' + tweet._id);
       res.redirect('/dashboard');
     }).catch(err => {
       console.log('Error saving tweet: ' + err);
@@ -64,9 +65,15 @@ exports.addTweet = {
 };
 
 exports.removeTweet = {
+
   handler: function (req, res) {
-    const removedTweet = req.params.id;
-    console.log('The removed tweet had an id of: ' + removedTweet);
-    res.view('home');
-  }
+    const deletedTweet = req.params.id;
+    Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
+      console.log('Tweet successfully deleted:' + deletedTweet);
+      res.redirect('/dashboard');
+    }).catch(err => {
+      console.log('Error deleting tweet:' + err);
+      res.redirect('/dashboard');
+    });
+  },
 };

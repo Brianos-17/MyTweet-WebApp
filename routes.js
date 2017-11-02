@@ -11,10 +11,12 @@ module.exports = [
   { method: 'GET',    path: '/globalTimeline',   config: Dashboard.globalTimeline },
   { method: 'GET',    path: '/removeTweet/{id}', config: Dashboard.removeTweet },
   { method: 'GET',    path: '/adminDashboard',   config: Dashboard.adminDashboard },
+  { method: 'GET',    path: '/deleteUser/{_id}', config: Dashboard.removeUser },
 
   { method: 'POST',   path: '/register/{userType}',      config: Accounts.register },
-  { method: 'POST',   path: '/authenticate',         config: Accounts.authenticate },
-  { method: 'POST',   path: '/addTweet',             config: Dashboard.addTweet },
+  { method: 'POST',   path: '/authenticate',             config: Accounts.authenticate },
+  { method: 'POST',   path: '/addTweet',                 config: Dashboard.addTweet },
+
 
 
 ];

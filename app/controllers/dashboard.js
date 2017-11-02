@@ -88,11 +88,25 @@ exports.removeTweet = {
   handler: function (req, res) {
     const deletedTweet = req.params.id;
     Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
-      console.log('Tweet successfully deleted:' + deletedTweet);
+      console.log('Tweet successfully deleted:' + tweet._id);
       res.redirect('/dashboard');
     }).catch(err => {
       console.log('Error deleting tweet:' + err);
       res.redirect('/dashboard');
     });
+  },
+};
+
+exports.removeUser = {
+  handler: function (req, res) {
+    const userId = req.params._id;
+    User.findOneAndRemove({_id: userId}).then(removedUser => {
+      console.log('Successfully deleted user: ' + removedUser.firstName
+          + " " + removedUser.lastName);
+      res.redirect('/adminDashboard');
+    }).catch(err => {
+      console.log('Error deleting user: ' + err);
+      res.redirect('/adminDashboard');
+    })
   },
 };

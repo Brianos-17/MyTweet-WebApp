@@ -1,4 +1,8 @@
-{{> menu id="globalTimeline"}}
+{{#if admin}}
+    {{> menu-admin id="globalTimeline"}}
+{{else}}
+    {{> menu id="globalTimeline"}}
+{{/if}}
 
 <section class="ui raised segment">
     {{> user-timeline}}

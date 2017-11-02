@@ -110,3 +110,22 @@ exports.removeUser = {
     })
   },
 };
+
+exports.viewUserTweets = {
+  handler: function(req, res) {
+    const userId = req.params._id;
+    User.findOne({_id: userId}).then(foundUser => {
+      Tweet.find({user: userId}).then(tweets => {
+        console.log('Loading tweets for user: ' + foundUser.firstName);
+        res.view('globalTimeline', {
+          title: foundUser.firstName + "'s Global Timeline",
+          tweet: tweets,
+          admin: true
+        });
+      });
+    }).catch(err => {
+      console.log('Error loading users tweets: ' + err);
+      res.redirect('/adminDashboard');
+    });
+  },
+};

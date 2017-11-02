@@ -1,5 +1,6 @@
 const Accounts = require('./app/controllers/accounts');
 const Dashboard = require('./app/controllers/dashboard');
+const Assets = require('./app/controllers/assets');
 
 module.exports = [
   { method: 'GET',    path: '/',                 config: Accounts.main },
@@ -12,11 +13,17 @@ module.exports = [
   { method: 'GET',    path: '/removeTweet/{id}', config: Dashboard.removeTweet },
   { method: 'GET',    path: '/adminDashboard',   config: Dashboard.adminDashboard },
   { method: 'GET',    path: '/deleteUser/{_id}', config: Dashboard.removeUser },
+  { method: 'GET',    path: '/dashboard/viewUserTweets/{_id}', config: Dashboard.viewUserTweets },
 
   { method: 'POST',   path: '/register/{userType}',      config: Accounts.register },
   { method: 'POST',   path: '/authenticate',             config: Accounts.authenticate },
   { method: 'POST',   path: '/addTweet',                 config: Dashboard.addTweet },
 
-
+  {
+    method: 'GET',
+    path: '/{param*}',
+    config: { auth: false },
+    handler: Assets.servePublicDirectory,
+  },
 
 ];

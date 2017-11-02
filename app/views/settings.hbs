@@ -1,0 +1,79 @@
+{{> menu id="account"}}
+
+<section class="ui raised segment">
+    <div class="ui three column grid basic center aligned segment">
+        <div class="column left aligned">
+            <h3> Member Details </h3>
+            <table class="ui fixed left aligned table">
+                <tr>
+                    <td>Name:</td>
+                    <td>{{user.firstName}} {{user.lastName}}</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{{user.email}}</td>
+                </tr>
+            </table>
+
+            <div class="middle aligned">
+                <img class="ui large image" src="http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png" alt="Update-Profile icon">
+            </div>
+
+        </div>
+
+        <div class="column left aligned">
+            <h3>Update Profile</h3>
+
+            <form class="ui segment form" name="updateFirstName" action="/updateProfile" method="POST">
+                <div class="field">
+                    <label> First Name </label>
+                    <input placeholder="First Name..." type="text" name="firstName" required>
+                </div>
+                <button class="ui blue submit button">Update</button>
+            </form>
+
+            <form class="ui segment form" name="updateLastName" action="/updateProfile" method="POST">
+                <div class="field">
+                    <label> Last Name </label>
+                    <input placeholder="Last Name..." type="text" name="lastName" required>
+                </div>
+                <button class="ui blue submit button">Update</button>
+            </form>
+
+            <form class="ui segment form" name="updateEmail" action="/updateProfile" method="POST">
+                <div class="field">
+                    <label> Email </label>
+                    <input placeholder="E-mail Address..." type="email" name="email" required>
+                </div>
+                <button class="ui blue submit button">Update</button>
+            </form>
+        </div>
+
+        <div class="column left aligned">
+            <h3>Update Profile</h3>
+
+            <form class="ui segment form" name="updatePassword" action="/updateProfile" method="POST" onsubmit="return validatePassword()">
+                <div class="field">
+                    <label> Password </label>
+                    <input placeholder="Password..." type="password" name="password" required>
+                </div>
+                <div class="field">
+                    <label> Password Validation </label>
+                    <input placeholder="Please enter the same password as above..." type="password" name="passwordValid">
+                </div>
+                <button class="ui blue submit button">Update</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    function validatePassword() {
+        var passwordValid = document.forms["updatePassword"]["passwordValid"].value;
+        var password = document.forms["updatePassword"]["password"].value;
+        if(passwordValid !== password) {
+            alert("Your password validation must match your password");
+            return false;
+        }
+    }
+</script>

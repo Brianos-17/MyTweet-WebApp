@@ -86,10 +86,17 @@ exports.addTweet = {
 exports.removeTweet = {
 
   handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
     const deletedTweet = req.params.id;
-    Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
-      console.log('Tweet successfully deleted:' + tweet._id);
-      res.redirect('/dashboard');
+    User.findOne({email: userEmail}).then(currentUser => {
+      Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
+        console.log('Tweet successfully deleted:' + tweet._id);
+        if(currentUser.admin){
+          res.redirect('/dashboard/viewUserTweets/' + tweet.user);
+        } else {
+          res.redirect('/dashboard');
+        }
+    });
     }).catch(err => {
       console.log('Error deleting tweet:' + err);
       res.redirect('/dashboard');

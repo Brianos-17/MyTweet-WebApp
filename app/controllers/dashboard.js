@@ -26,6 +26,12 @@ exports.dashboard = {
   },
 };
 
+exports.adminDashboard = {
+  handler: function (req, res) {
+
+  }
+}
+
 exports.globalTimeline = {
   handler: function(req, res) {
     Tweet.find({}).sort({date: -1}).then(tweetList => {

@@ -54,7 +54,11 @@ exports.authenticate = {
           loggedIn: true,
         loggedInUser: user.email,
         });
-        res.redirect('/dashboard');
+        if (foundUser.admin){
+          res.redirect('/adminDashboard');
+        } else {
+          res.redirect('/dashboard');
+        }
       } else {
         res.redirect('/login');
       }

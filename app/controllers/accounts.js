@@ -14,8 +14,10 @@ exports.main = {
 exports.signup = {
   auth: false,
   handler: function(req, res) {
+    const userType = 'user';
     res.view('signup', {
-      title: 'Sign Up for MyTweet'
+      title: 'Sign Up for MyTweet',
+      userType: userType //Used for check in register method
     });
   },
 };
@@ -23,11 +25,16 @@ exports.signup = {
 exports.register = {
   auth: false,
   handler: function(req, res) {
+    const userType = req.params.userType;
     const user = new User(req.payload);
     user.save().then(newUser => {
       console.log('New user registered: ' + newUser.firstName +
           ' ' + newUser.lastName);
-      res.redirect('/login');
+      if(userType === 'admin') {
+        res.redirect('/adminDashboard')
+      } else{
+        res.redirect('/login');
+      }
     }).catch(err => {
       res.redirect('/');
       console.log('Error registering new user: ' + err);

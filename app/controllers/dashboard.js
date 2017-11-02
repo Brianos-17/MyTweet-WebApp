@@ -28,12 +28,14 @@ exports.dashboard = {
 
 exports.adminDashboard = {
   handler: function (req, res) {
+    const userType = 'admin';
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne({email: userEmail}).then(admin => {
       User.find({admin: false}).then(userList => {
       res.view('adminHome', {
         user: admin,
-        userList: userList
+        userList: userList,
+        userType: userType //Used for check in register method
       });
       });
     }).catch(err => {

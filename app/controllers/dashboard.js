@@ -28,9 +28,20 @@ exports.dashboard = {
 
 exports.adminDashboard = {
   handler: function (req, res) {
-
-  }
-}
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne({email: userEmail}).then(admin => {
+      User.find({admin: false}).then(userList => {
+      res.view('adminHome', {
+        user: admin,
+        userList: userList
+      });
+      });
+    }).catch(err => {
+      console.log('Error loading admin homepage: ' + err);
+      res.redirect('/');
+    });
+  },
+};
 
 exports.globalTimeline = {
   handler: function(req, res) {

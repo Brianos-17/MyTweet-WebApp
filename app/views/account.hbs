@@ -1,0 +1,65 @@
+{{> menu id="account"}}
+
+<section class="ui raised segment">
+    <div class="ui three column grid basic center aligned segment">
+        <div class="column left aligned">
+            <h3> Member Details </h3>
+            <table class="ui fixed left aligned table">
+                <tr>
+                    <td>Name:</td>
+                    <td>{{user.firstName}} {{user.lastName}}</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{{user.email}}</td>
+                </tr>
+            </table>
+
+            <div class="middle aligned">
+                <img class="ui large image" src="http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png"
+                     alt="Update-Profile icon">
+            </div>
+
+        </div>
+
+        <div class="column left aligned">
+            <h3>Update Profile</h3>
+
+            <form class="ui segment form" name="updateAccount" action="/updateAccount" method="POST" onsubmit="validatePassword()">
+                <div class="field">
+                    <label> First Name </label>
+                    <input value="{{user.firstName}}" placeholder="First Name..." type="text" name="firstName" required>
+                </div>
+                <div class="field">
+                    <label> Last Name </label>
+                    <input value="{{user.lastName}}" placeholder="Last Name..." type="text" name="lastName" required>
+                </div>
+                <div class="field">
+                    <label> Email </label>
+                    <input value="{{user.email}}" placeholder="E-mail Address..." type="email" name="email" required>
+                </div>
+                <div class="field">
+                <label> Password </label>
+                <input value="{{user.password}}" placeholder="Password..." type="password" name="password" required>
+                </div>
+                <div class="field">
+                    <label> Password Validation </label>
+                    <input value="{{user.password}}" placeholder="Please enter the same password as above..."
+                           type="password" name="passwordValid">
+                </div>
+                <button class="ui blue submit button">Update</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    function validatePassword() {
+        var passwordValid = document.forms["updateAccount"]["passwordValid"].value;
+        var password = document.forms["updateAccount"]["password"].value;
+        if(passwordValid !== password) {
+            alert("Your password validation must match your password");
+            return false;
+        }
+    }
+</script>

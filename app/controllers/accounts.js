@@ -88,13 +88,35 @@ exports.account = {
   handler: function(req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne({email: userEmail}).then(currentUser => {
-      res.view('settings', {
+      res.view('account', {
         title: 'Account Settings',
         user: currentUser,
       });
     }).catch(err => {
       console.log('Error access account settings: ' + err);
       res.redirect('/home');
+    });
+  },
+};
+
+exports.updateAccount = {
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    const data = req.payload;
+    User.findOne({email: userEmail}).then(foundUser => {
+      foundUser.firstName = data.firstName;
+      foundUser.lastName = data.lastName;
+      foundUser.email = data.email;
+      foundUser.password = data.password;
+      return foundUser.save();
+    }).then(editedUser => {
+      res.view('account', {
+        title: 'Account Settings',
+        user: editedUser
+      });
+    }).catch(err => {
+      console.log('Error updating users account: ' + err);
+      res.redirect('/dashboard');
     });
   },
 };

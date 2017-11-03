@@ -13,13 +13,13 @@ module.exports = [
   { method: 'GET',    path: '/removeTweet/{_id}',config: Dashboard.removeTweet },
   { method: 'GET',    path: '/adminDashboard',   config: Dashboard.adminDashboard },
   { method: 'GET',    path: '/deleteUser/{_id}', config: Dashboard.removeUser },
-  { method: 'GET',    path: '/deleteAll/{id}',           config: Dashboard.deleteAll },
+  { method: 'GET',    path: '/deleteAll/{id}',   config: Dashboard.deleteAll },
   { method: 'GET',    path: '/dashboard/viewUserTweets/{_id}', config: Dashboard.viewUserTweets },
 
-  { method: 'POST',   path: '/register/{userType}',      config: Accounts.register },
-  { method: 'POST',   path: '/authenticate',             config: Accounts.authenticate },
-  { method: 'POST',   path: '/addTweet',                 config: Dashboard.addTweet },
-  { method: 'POST',   path: '/updateAccount',            config: Accounts.updateAccount },
+  { method: 'POST',   path: '/register/{userType}',       config: Accounts.register },
+  { method: 'POST',   path: '/authenticate',              config: Accounts.authenticate },
+  { method: 'POST',   path: '/addTweet/{userEmail}',      config: Dashboard.addTweet },
+  { method: 'POST',   path: '/updateAccount/{userEmail}', config: Accounts.updateAccount },
 
   {
     method: 'GET',

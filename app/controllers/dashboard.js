@@ -6,6 +6,7 @@
 
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
+const Joi = require('joi');
 
 exports.dashboard = {
   handler: function (req, res) {
@@ -61,6 +62,28 @@ exports.globalTimeline = {
 };
 
 exports.addTweet = {
+  auth: false,
+
+  validate: {
+    payload: {
+      message: Joi.string().max(140).required(),
+    },
+    failAction: function(req, res, source, err) {
+      const userEmail = req.params.userEmail;
+      User.findOne({email: userEmail}).then(currentUser => {
+        Tweet.find({user: currentUser._id}).then(tweetList => {res.view('home', {
+          title: 'MyTweet Homepage',
+          user: currentUser,
+          tweet: tweetList,
+          errors: err.data.details,
+        }).code(400);
+        });
+      }).catch(err => {
+        console.log('Error getting user data for new tweet: ' + err);
+        res.redirect('/dashboard');
+      });
+    },
+  },
   handler: function(req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
     let userId = null;

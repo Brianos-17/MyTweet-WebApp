@@ -25,22 +25,22 @@
         <div class="column left aligned">
             <h3>Update Profile</h3>
 
-            <form class="ui segment form" name="updateAccount" action="/updateAccount" method="POST" onsubmit="validatePassword()">
+            <form class="ui segment form" name="updateAccount" action="/updateAccount/{{user.email}}" method="POST">
                 <div class="field">
                     <label> First Name </label>
-                    <input value="{{user.firstName}}" placeholder="First Name..." type="text" name="firstName" required>
+                    <input value="{{user.firstName}}" placeholder="First Name..." type="text" name="firstName">
                 </div>
                 <div class="field">
                     <label> Last Name </label>
-                    <input value="{{user.lastName}}" placeholder="Last Name..." type="text" name="lastName" required>
+                    <input value="{{user.lastName}}" placeholder="Last Name..." type="text" name="lastName">
                 </div>
                 <div class="field">
                     <label> Email </label>
-                    <input value="{{user.email}}" placeholder="E-mail Address..." type="email" name="email" required>
+                    <input value="{{user.email}}" placeholder="E-mail Address..." type="email" name="email">
                 </div>
                 <div class="field">
                 <label> Password </label>
-                <input value="{{user.password}}" placeholder="Password..." type="password" name="password" required>
+                <input value="{{user.password}}" placeholder="Password..." type="password" name="password">
                 </div>
                 <div class="field">
                     <label> Password Validation </label>
@@ -50,16 +50,8 @@
                 <button class="ui blue submit button">Update</button>
             </form>
         </div>
+        <div class="column left aligned">
+            {{> form-error}}
+        </div>
     </div>
 </section>
-
-<script>
-    function validatePassword() {
-        var passwordValid = document.forms["updateAccount"]["passwordValid"].value;
-        var password = document.forms["updateAccount"]["password"].value;
-        if(passwordValid !== password) {
-            alert("Your password validation must match your password");
-            return false;
-        }
-    }
-</script>

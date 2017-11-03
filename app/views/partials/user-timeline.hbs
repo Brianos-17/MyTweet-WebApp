@@ -3,7 +3,7 @@
     <table class="ui fixed centre aligned table">
         <thead>
         <tr>
-            <th class="one wide"> User Icon </th>
+            <th class="one wide"> User </th>
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
             {{#unless ../globalTimeline}}
@@ -23,7 +23,7 @@
                         <i class=" large red trash icon"></i>
                         </a>
                         <div class="ui middle aligned checkbox">
-                            <input type="checkbox" name="example">
+                            <input type="checkbox" id="specificTweet" value="{{id}}">
                             <label></label>
                         </div>
                     </td>
@@ -34,8 +34,12 @@
     </table>
 {{/each}}
 {{#unless globalTimeline}}
-    <div>
-        <button class="ui red disabled button" id="deleteSet">Delete</button>
+    <form name="deleteSet"  action="/deleteAll/{{user._id}}" method="GET">
+    <div class="ui grid">
+        <div class="fourteen wide column"></div>
+        <div class="one wide right aligned column" >
+            <button class="ui red button" id="deleteSet">Delete All</button>
+        </div>
     </div>
-    {{> deleteSet}}
+    </form>
 {{/unless}}

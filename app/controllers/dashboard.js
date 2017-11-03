@@ -87,7 +87,7 @@ exports.removeTweet = {
 
   handler: function (req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
-    const deletedTweet = req.params.id;
+    const deletedTweet = req.params._id;
     User.findOne({email: userEmail}).then(currentUser => {
       Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
         console.log('Tweet successfully deleted:' + tweet._id);
@@ -127,12 +127,32 @@ exports.viewUserTweets = {
         res.view('globalTimeline', {
           title: foundUser.firstName + "'s Global Timeline",
           tweet: tweets,
+          user: foundUser,
           admin: true
         });
       });
     }).catch(err => {
       console.log('Error loading users tweets: ' + err);
       res.redirect('/adminDashboard');
+    });
+  },
+};
+
+exports.deleteAll = {
+  handler: function(req, res) {
+    const userId = req.params.id;
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne({email: userEmail}).then(foundUser => {
+      Tweet.remove({user: userId}).then(deletedTweets => {
+        console.log('Deleted tweets for user: ' + userId);
+        if(foundUser.admin){
+          res.redirect('/adminDashboard');
+        } else {
+          res.redirect('/dashboard');
+        }
+      });
+    }).catch(err => {
+      console.log('Error deleting tweets: ' + err);
     });
   },
 };

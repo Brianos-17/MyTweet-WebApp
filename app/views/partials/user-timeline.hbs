@@ -18,12 +18,24 @@
                 <td>{{message}}</td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}
-                    <td><a href="/removeTweet/{{id}}">
+                    <td>
+                        <a href="/removeTweet/{{id}}">
                         <i class=" large red trash icon"></i>
-                    </a></td>
+                        </a>
+                        <div class="ui middle aligned checkbox">
+                            <input type="checkbox" name="example">
+                            <label></label>
+                        </div>
+                    </td>
                 {{/unless}}
             </tr>
         </div>
         </tbody>
     </table>
 {{/each}}
+{{#unless globalTimeline}}
+    <div>
+        <button class="ui red disabled button" id="deleteSet">Delete</button>
+    </div>
+    {{> deleteSet}}
+{{/unless}}

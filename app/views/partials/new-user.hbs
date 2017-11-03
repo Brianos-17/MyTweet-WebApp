@@ -1,5 +1,6 @@
 
-<form class="ui stacked segment form" name="addNewClass" action="/register/{{userType}}" method="POST">
+<form class="ui stacked segment form" name="addNewUser" action="/register/{{userType}}" method="POST"
+      onsubmit="return validatePassword()">
     <div class="three fields">
         <div class="required field">
             <label> First Name </label>
@@ -29,8 +30,8 @@
 
 <script>
     function validatePassword() {
-        var passwordValid = document.forms["addNewClass"]["passwordValid"].value;
-        var password = document.forms["addNewClass"]["password"].value;
+        var passwordValid = document.forms["addNewUser"]["passwordValid"].value;
+        var password = document.forms["addNewUser"]["password"].value;
         if(passwordValid !== password) {
             alert("Your password validation must match your password");
             return false;

@@ -6,6 +6,7 @@
 
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
+const Joi = require('joi');
 
 exports.dashboard = {
   handler: function (req, res) {
@@ -61,6 +62,28 @@ exports.globalTimeline = {
 };
 
 exports.addTweet = {
+  auth: false,
+
+  validate: {
+    payload: {
+      message: Joi.string().max(140).required(),
+    },
+    failAction: function(req, res, source, err) {
+      const userEmail = req.params.userEmail;
+      User.findOne({email: userEmail}).then(currentUser => {
+        Tweet.find({user: currentUser._id}).then(tweetList => {res.view('home', {
+          title: 'MyTweet Homepage',
+          user: currentUser,
+          tweet: tweetList,
+          errors: err.data.details,
+        }).code(400);
+        });
+      }).catch(err => {
+        console.log('Error getting user data for new tweet: ' + err);
+        res.redirect('/dashboard');
+      });
+    },
+  },
   handler: function(req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
     let userId = null;
@@ -86,10 +109,17 @@ exports.addTweet = {
 exports.removeTweet = {
 
   handler: function (req, res) {
-    const deletedTweet = req.params.id;
-    Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
-      console.log('Tweet successfully deleted:' + tweet._id);
-      res.redirect('/dashboard');
+    const userEmail = req.auth.credentials.loggedInUser;
+    const deletedTweet = req.params._id;
+    User.findOne({email: userEmail}).then(currentUser => {
+      Tweet.findOneAndRemove({ _id: deletedTweet }).then(tweet => {
+        console.log('Tweet successfully deleted:' + tweet._id);
+        if(currentUser.admin){
+          res.redirect('/dashboard/viewUserTweets/' + tweet.user);
+        } else {
+          res.redirect('/dashboard');
+        }
+    });
     }).catch(err => {
       console.log('Error deleting tweet:' + err);
       res.redirect('/dashboard');
@@ -108,5 +138,44 @@ exports.removeUser = {
       console.log('Error deleting user: ' + err);
       res.redirect('/adminDashboard');
     })
+  },
+};
+
+exports.viewUserTweets = {
+  handler: function(req, res) {
+    const userId = req.params._id;
+    User.findOne({_id: userId}).then(foundUser => {
+      Tweet.find({user: userId}).then(tweets => {
+        console.log('Loading tweets for user: ' + foundUser.firstName);
+        res.view('globalTimeline', {
+          title: foundUser.firstName + "'s Global Timeline",
+          tweet: tweets,
+          user: foundUser,
+          admin: true
+        });
+      });
+    }).catch(err => {
+      console.log('Error loading users tweets: ' + err);
+      res.redirect('/adminDashboard');
+    });
+  },
+};
+
+exports.deleteAll = {
+  handler: function(req, res) {
+    const userId = req.params.id;
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne({email: userEmail}).then(foundUser => {
+      Tweet.remove({user: userId}).then(deletedTweets => {
+        console.log('Deleted tweets for user: ' + userId);
+        if(foundUser.admin){
+          res.redirect('/adminDashboard');
+        } else {
+          res.redirect('/dashboard');
+        }
+      });
+    }).catch(err => {
+      console.log('Error deleting tweets: ' + err);
+    });
   },
 };

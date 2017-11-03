@@ -1,5 +1,5 @@
 <div class="ui six column">
-    <form class="ui stacked segment form" name="addTweet" action="/addTweet" method="POST">
+    <form class="ui stacked segment form" name="addTweet" action="/addTweet/{{user.email}}" method="POST">
         <div class="field">
             <label>Tweet</label>
             <input name="message" type="text" placeholder="What's on your mind?" maxlength="140">

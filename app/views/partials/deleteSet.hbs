@@ -1,0 +1,34 @@
+<!--Help for this class retrieved from: https://api.jquery.com/addclass/-->
+<!--https://stackoverflow.com/questions/30528166/how-to-dynamically-enabled-and-disabled-button-when-checkbox-is-checked-and-unch-->
+
+<script>
+    let checkedSet = [];
+    $(document).ready(function() {
+        $('[type="checkbox"]').change(function() {
+          if($('input[type=checkbox]:checked').length > 0){
+              $('#deleteSet').removeClass('disabled');
+          } else {
+              $('#deleteSet').addClass('disabled');
+          }
+        });
+    });
+
+    $(document).ready(function() {
+      $('[type="checkbox"]').each(function() {
+          if($('input[type=checkbox]:checked')) {
+              checkedSet.push(this);
+          }
+      });
+    });
+
+    $(document).ready(function () {
+      $('#deletedSet').submit(function() {
+          event.preventDefault();
+        const action = '/deleteSet' + checkedSet;
+          $(this).attribute('action', action);
+        return true;
+      });
+    });
+
+
+</script>

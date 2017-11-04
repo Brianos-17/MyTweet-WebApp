@@ -3,7 +3,9 @@
     <table class="ui fixed centre aligned table">
         <thead>
         <tr>
-            <th class="one wide"> User </th>
+            {{#if ../globalTimeline}}
+                <th class="one wide"> User </th>
+            {{/if}}
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
             {{#unless ../globalTimeline}}
@@ -14,7 +16,9 @@
         <tbody>
         <div class="ui bulleted list">
             <tr>
-                <td>{{../user.firstName}}</td>
+                {{#if ../globalTimeline}}
+                    <td><a href="/viewUser/{{user._id}}">{{user.firstName}} {{user.lastName}}</a></td>
+                {{/if}}
                 <td>{{message}}</td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}

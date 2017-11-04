@@ -48,11 +48,11 @@ exports.adminDashboard = {
 
 exports.globalTimeline = {
   handler: function(req, res) {
-    Tweet.find({}).sort({date: -1}).then(tweetList => {
-      res.view('globalTimeline', {
-        title: 'MyTweet Global Timeline',
-        tweet: tweetList,
-        globalTimeline: true,
+    Tweet.find({}).sort({date: -1}).populate('user').then(tweetList => {
+        res.view('globalTimeline', {
+          title: 'MyTweet Global Timeline',
+          tweet: tweetList,
+          globalTimeline: true,
         });
       }).catch(err => {
       console.log("Error loading timeline: " + err);
@@ -71,7 +71,8 @@ exports.addTweet = {
     failAction: function(req, res, source, err) {
       const userEmail = req.auth.credentials.loggedInUser;
       User.findOne({email: userEmail}).then(currentUser => {
-        Tweet.find({user: currentUser._id}).then(tweetList => {res.view('home', {
+        Tweet.find({user: currentUser._id}).then(tweetList => {
+          res.view('home', {
           title: 'MyTweet Homepage',
           user: currentUser,
           tweet: tweetList,
@@ -177,5 +178,24 @@ exports.deleteAll = {
     }).catch(err => {
       console.log('Error deleting tweets: ' + err);
     });
+  },
+};
+
+exports.viewUser = {
+  auth: false,
+  handler: function (req, res) {
+    const userId = req.params.id;
+    User.findOne({_id: userId}).then(foundUser => {
+      Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
+        res.view('viewUser', {
+          title: foundUser.firstName + "'s Tweets",
+          user: foundUser,
+          tweet: tweets
+        });
+      });
+    }).catch(err => {
+      console.log('Error loading user details: ' + err);
+      res.redirect('/globalTimeline');
+    })
   },
 };

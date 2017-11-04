@@ -53,8 +53,8 @@ exports.globalTimeline = {
         title: 'MyTweet Global Timeline',
         tweet: tweetList,
         globalTimeline: true,
-      });
-    }).catch(err => {
+        });
+      }).catch(err => {
       console.log("Error loading timeline: " + err);
       res.redirect('/dashboard');
     });
@@ -69,7 +69,7 @@ exports.addTweet = {
       message: Joi.string().max(140).required(),
     },
     failAction: function(req, res, source, err) {
-      const userEmail = req.params.userEmail;
+      const userEmail = req.auth.credentials.loggedInUser;
       User.findOne({email: userEmail}).then(currentUser => {
         Tweet.find({user: currentUser._id}).then(tweetList => {res.view('home', {
           title: 'MyTweet Homepage',
@@ -85,7 +85,7 @@ exports.addTweet = {
     },
   },
   handler: function(req, res) {
-    const userEmail = req.auth.credentials.loggedInUser;
+    const userEmail = req.params.userEmail;
     let userId = null;
     let tweet = null;
     User.findOne({ email: userEmail }).then(user => {

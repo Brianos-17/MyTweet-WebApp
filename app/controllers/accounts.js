@@ -98,7 +98,7 @@ exports.authenticate = {
       if (foundUser && foundUser.password === user.password) {
         req.cookieAuth.set({
           loggedIn: true,
-        loggedInUser: user.email,
+          loggedInUser: user.email,
         });
         if (foundUser.admin){
           res.redirect('/adminDashboard');
@@ -167,7 +167,7 @@ exports.updateAccount = {
     },
   },
   handler: function (req, res) {
-    const userEmail = req.auth.credentials.loggedInUser;
+    const userEmail = req.params.userEmail;
     const data = req.payload;
     User.findOne({email: userEmail}).then(foundUser => {
       foundUser.firstName = data.firstName;

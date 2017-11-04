@@ -14,18 +14,14 @@
         <tbody>
         <div class="ui bulleted list">
             <tr>
-                <td>Test</td>
+                <td>{{../user.firstName}}</td>
                 <td>{{message}}</td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}
                     <td>
                         <a href="/removeTweet/{{id}}">
-                        <i class=" large red trash icon"></i>
+                            <i class=" large red trash icon"></i>
                         </a>
-                        <!--<div class="ui middle aligned checkbox">-->
-                            <!--<input type="checkbox" id="specificTweet" value="{{id}}">-->
-                            <!--<label></label>-->
-                        <!--</div>-->
                     </td>
                 {{/unless}}
             </tr>

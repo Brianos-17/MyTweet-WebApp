@@ -93,14 +93,14 @@ suite('User API tests', function () {
     assert.equal(users.length, size -1);
   });
 
-  // test('delete all users', function() {
-  //   const usersURL = 'http://localhost:4000/api/users';
-  //   let res = request('DELETE', usersURL);
-  //
-  //   assert(res.statusCode, 204);
-  //
-  //   res = request('GET', usersURL);
-  //   let users = JSON.parse(res.getBody('utf8'));
-  //   assert.equal(users.length, 0);
-  // });
+   test('delete all users', function() {
+     const usersURL = 'http://localhost:4000/api/users';
+     let res = request('DELETE', usersURL);
+
+     assert(res.statusCode, 204);
+
+     res = request('GET', usersURL);
+     let users = JSON.parse(res.getBody('utf8'));
+     assert.equal(users.length, 0);
+   });
 });

@@ -1,0 +1,71 @@
+{
+  "users": {
+    "_model": "User",
+    "bart": {
+      "firstName": "Bart",
+      "lastName": "Simpson",
+      "email": "bart@simpson.com",
+      "password": "secret",
+      "admin": true
+    },
+    "marge": {
+      "firstName": "Marge",
+      "lastName": "Simpson",
+      "email": "marge@simpson.com",
+      "password": "secret",
+      "admin": false
+    },
+    "homer": {
+      "firstName": "Homer",
+      "lastName": "Simpson",
+      "email": "homer@simpson.com",
+      "password": "secret",
+      "admin": false
+    },
+    "maggie": {
+      "firstName": "Maggie",
+      "lastName": "Simpson",
+      "email": "maggie@simpson.com",
+      "password": "secret",
+      "admin": false
+    }
+  },
+  "tweets": {
+    "_model": "Tweet",
+    "one": {
+      "message": "1st Tweet",
+      "date": "2017-11-03 13:32:52",
+      "user": "->users.homer"
+    },
+    "two": {
+      "message": "2nd Tweet",
+      "date": "2017-11-03 20:13:06",
+      "user": "->users.marge"
+    },
+    "three": {
+      "message": "Test #1",
+      "date": "2017-11-03 20:13:11",
+      "user": "->users.homer"
+    },
+    "four": {
+      "message": "Test #2",
+      "date": "2017-11-03 20:13:15",
+      "user": "->users.maggie"
+    },
+    "five": {
+      "message": "Hello from Homer",
+      "date": "2017-11-03 20:20:20",
+      "user": "->users.homer"
+    },
+    "six": {
+      "message": "Hello from Marge",
+      "date": "2017-11-03 20:20:20",
+      "user": "->users.marge"
+    },
+    "seven": {
+      "message": "Hello from Maggie",
+      "date": "2017-11-03 22:22:22",
+      "user": "->users.maggie"
+    }
+  }
+}

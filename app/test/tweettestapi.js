@@ -15,16 +15,21 @@ suite('User API tests', function () {
     const res = request('GET', tweetURL);
     const tweets = JSON.parse(res.getBody('utf8'));
 
-    assert.equal(tweets.length, 8)
-
+    assert.equal(tweets.length, 7);
     assert.equal(tweets[0].message, '1st Tweet');
     assert.equal(tweets[0].date, '2017-11-03 13:32:52');
-
-    assert.equal(tweets[1].message, 'test');
+    assert.equal(tweets[1].message, '2nd Tweet');
     assert.equal(tweets[1].date, '2017-11-03 20:13:06');
-
-    assert.equal(tweets[2].message, 'test #2');
+    assert.equal(tweets[2].message, 'Test #1');
     assert.equal(tweets[2].date, '2017-11-03 20:13:11');
+    assert.equal(tweets[3].message, 'Test #2');
+    assert.equal(tweets[3].date, '2017-11-03 20:13:15');
+    assert.equal(tweets[4].message, 'Hello from Homer');
+    assert.equal(tweets[4].date, '2017-11-03 20:20:20');
+    assert.equal(tweets[5].message, 'Hello from Marge');
+    assert.equal(tweets[5].date, '2017-11-03 20:20:20');
+    assert.equal(tweets[6].message, 'Hello from Maggie');
+    assert.equal(tweets[6].date, '2017-11-03 22:22:22');
   });
 
   test('get one tweet', function() {
@@ -39,7 +44,6 @@ suite('User API tests', function () {
 
     assert.equal(oneTweet.message, '1st Tweet');
     assert.equal(oneTweet.date, '2017-11-03 13:32:52');
-    assert.equal(oneTweet.user, '59fb5d7a7a33fc2e10b243e2');
   });
 
   test('create a tweet', function() {
@@ -65,7 +69,7 @@ suite('User API tests', function () {
     let tweets = JSON.parse(res.getBody('utf8'));
     const size = tweets.length;
 
-    const deletedTweet = tweetURL+ '/' + tweets[8]._id;
+    const deletedTweet = tweetURL+ '/' + tweets[7]._id;
     res = request('DELETE', deletedTweet);
 
     assert(res.statusCode, 204);//ensures successful deletion

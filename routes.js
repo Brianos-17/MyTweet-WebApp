@@ -14,6 +14,7 @@ module.exports = [
   { method: 'GET',    path: '/adminDashboard',   config: Dashboard.adminDashboard },
   { method: 'GET',    path: '/deleteUser/{_id}', config: Dashboard.removeUser },
   { method: 'GET',    path: '/deleteAll/{id}',   config: Dashboard.deleteAll },
+  { method: 'GET',    path: '/viewUser/{id}',    config: Dashboard.viewUser },
   { method: 'GET',    path: '/dashboard/viewUserTweets/{_id}', config: Dashboard.viewUserTweets },
 
   { method: 'POST',   path: '/register/{userType}',       config: Accounts.register },

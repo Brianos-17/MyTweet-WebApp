@@ -1,3 +1,7 @@
+/**
+ * Tweet model, schema for Tweets used by mongoose to save in MongoDB
+ */
+
 const mongoose = require('mongoose');
 
 const tweetSchema = mongoose.Schema({

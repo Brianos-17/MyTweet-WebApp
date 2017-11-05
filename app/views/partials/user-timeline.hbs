@@ -3,7 +3,9 @@
     <table class="ui fixed centre aligned table">
         <thead>
         <tr>
-            <th class="one wide"> User </th>
+            {{#if ../globalTimeline}}
+                <th class="one wide"> User </th>
+            {{/if}}
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
             {{#unless ../globalTimeline}}
@@ -14,18 +16,16 @@
         <tbody>
         <div class="ui bulleted list">
             <tr>
-                <td>Test</td>
+                {{#if ../globalTimeline}}
+                    <td><a href="/viewUser/{{user._id}}">{{user.firstName}} {{user.lastName}}</a></td>
+                {{/if}}
                 <td>{{message}}</td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}
                     <td>
                         <a href="/removeTweet/{{id}}">
-                        <i class=" large red trash icon"></i>
+                            <i class=" large red trash icon"></i>
                         </a>
-                        <!--<div class="ui middle aligned checkbox">-->
-                            <!--<input type="checkbox" id="specificTweet" value="{{id}}">-->
-                            <!--<label></label>-->
-                        <!--</div>-->
                     </td>
                 {{/unless}}
             </tr>

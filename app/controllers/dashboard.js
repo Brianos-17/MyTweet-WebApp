@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Controller responsible for all methods users use to interact with the app
+ * Controller responsible for all methods with which users interact with the app
+ * Responsible for creating and deleting tweets as well as rendering correct views of tweets
  **/
 
 const User = require('../models/user');
@@ -29,7 +30,7 @@ exports.dashboard = {
 
 exports.adminDashboard = {
   handler: function (req, res) {
-    const userType = 'admin';
+    const userType = 'admin';//needed to redirect admins back to admin homepage
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne({email: userEmail}).then(admin => {
       User.find({admin: false}).then(userList => {
@@ -48,13 +49,13 @@ exports.adminDashboard = {
 
 exports.globalTimeline = {
   handler: function(req, res) {
-    Tweet.find({}).sort({date: -1}).then(tweetList => {
-      res.view('globalTimeline', {
-        title: 'MyTweet Global Timeline',
-        tweet: tweetList,
-        globalTimeline: true,
-      });
-    }).catch(err => {
+    Tweet.find({}).sort({date: -1}).populate('user').then(tweetList => {
+        res.view('globalTimeline', {
+          title: 'MyTweet Global Timeline',
+          tweet: tweetList,
+          globalTimeline: true,
+        });
+      }).catch(err => {
       console.log("Error loading timeline: " + err);
       res.redirect('/dashboard');
     });
@@ -69,9 +70,10 @@ exports.addTweet = {
       message: Joi.string().max(140).required(),
     },
     failAction: function(req, res, source, err) {
-      const userEmail = req.params.userEmail;
+      const userEmail = req.auth.credentials.loggedInUser;
       User.findOne({email: userEmail}).then(currentUser => {
-        Tweet.find({user: currentUser._id}).then(tweetList => {res.view('home', {
+        Tweet.find({user: currentUser._id}).then(tweetList => {
+          res.view('home', {
           title: 'MyTweet Homepage',
           user: currentUser,
           tweet: tweetList,
@@ -85,7 +87,7 @@ exports.addTweet = {
     },
   },
   handler: function(req, res) {
-    const userEmail = req.auth.credentials.loggedInUser;
+    const userEmail = req.params.userEmail;
     let userId = null;
     let tweet = null;
     User.findOne({ email: userEmail }).then(user => {
@@ -177,5 +179,24 @@ exports.deleteAll = {
     }).catch(err => {
       console.log('Error deleting tweets: ' + err);
     });
+  },
+};
+
+exports.viewUser = {
+  auth: false,
+  handler: function (req, res) {
+    const userId = req.params.id;
+    User.findOne({_id: userId}).then(foundUser => {
+      Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
+        res.view('viewUser', {
+          title: foundUser.firstName + "'s Tweets",
+          user: foundUser,
+          tweet: tweets
+        });
+      });
+    }).catch(err => {
+      console.log('Error loading user details: ' + err);
+      res.redirect('/globalTimeline');
+    })
   },
 };

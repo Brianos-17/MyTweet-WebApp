@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Test class which exposes the API, tests the endpoints
+ * @type {Object.assert}
+ */
+
 const assert = require('chai').assert;
 var request = require('sync-request');
 

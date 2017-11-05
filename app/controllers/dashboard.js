@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Controller responsible for all methods users use to interact with the app
+ * Controller responsible for all methods with which users interact with the app
+ * Responsible for creating and deleting tweets as well as rendering correct views of tweets
  **/
 
 const User = require('../models/user');
@@ -29,7 +30,7 @@ exports.dashboard = {
 
 exports.adminDashboard = {
   handler: function (req, res) {
-    const userType = 'admin';
+    const userType = 'admin';//needed to redirect admins back to admin homepage
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne({email: userEmail}).then(admin => {
       User.find({admin: false}).then(userList => {

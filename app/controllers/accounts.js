@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Controller class, holds functions primarily relating to navigation around web apps pages,
+ * registration of new users, and authentication for logging in and out. Provides Joi validation
+ * for methods which require user input
+ */
+
 const User = require('../models/user');
 const Joi = require('joi');
 
@@ -98,7 +104,7 @@ exports.authenticate = {
       if (foundUser && foundUser.password === user.password) {
         req.cookieAuth.set({
           loggedIn: true,
-          loggedInUser: user.email,
+          loggedInUser: user.email,//assigns the users email as their cookie authentication
         });
         if (foundUser.admin){
           res.redirect('/adminDashboard');
@@ -146,7 +152,7 @@ exports.updateAccount = {
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
       password: Joi.string().required(),
-      passwordValid: Joi.string().required().valid(Joi.ref('password')),
+      passwordValid: Joi.string().required().valid(Joi.ref('password')),//must be the same as password
       email: Joi.string().email().required(),
     },
     options: {

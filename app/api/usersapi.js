@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Class which holds functions intended to test the endpoints relating to the
+ * User model of the API
+ */
+
 const User = require('../models/user');
 const Boom = require('boom');
 
@@ -33,7 +38,7 @@ exports.addNewUser = {
   handler: function (req, res) {
     const user = new User(req.payload);
     user.save().then(newUser => {
-      res(newUser).code(201);
+      res(newUser).code(201);//201 HTTP code for resource created
     }).catch(err => {
       res(Boom.badImplementation('Error creating new user: ' + err));
     });
@@ -45,7 +50,7 @@ exports.deleteOne = {
   auth: false,
   handler: function (req, res) {
     User.remove({_id: req.params.id}).then(user => {
-      res(user).code(204);
+      res(user).code(204);// 204: No content, ensures deletion
     }).catch(err => {
       res(Boom.notFound('User Id not found: ' + err));
     });

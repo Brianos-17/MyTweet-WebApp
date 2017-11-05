@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Class which holds functions intended to test the endpoints relating to the
+ * Tweet model of the API
+ */
+
 const Tweet = require('../models/tweet');
 const Boom = require('boom');
 
@@ -33,7 +38,7 @@ exports.addNewTweet = {
   handler: function(req, res) {
     const tweet = new Tweet(req.payload);
     tweet.save().then(newTweet => {
-      res(newTweet).code(201);
+      res(newTweet).code(201);//201: HTTP code for resource created
     }).catch(err => {
       res(Boom.badImplementation('Error creating new tweet: ' + err));
     });
@@ -45,7 +50,7 @@ exports.deleteOne = {
   auth: false,
   handler: function(req, res) {
     Tweet.remove({_id: req.params.id}).then(tweet => {
-      res(tweet).code(204);
+      res(tweet).code(204);//204: code for no content, ensures deletion
     }).catch(err => {
       res(Boom.notFound('Error finding tweet id: ' + err));
     });

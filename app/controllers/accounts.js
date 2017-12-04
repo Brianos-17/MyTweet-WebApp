@@ -7,6 +7,7 @@
  */
 
 const User = require('../models/user');
+const Tweet = require('../models/tweet');
 const Joi = require('joi');
 
 exports.main = {
@@ -189,6 +190,25 @@ exports.updateAccount = {
     }).catch(err => {
       console.log('Error updating users account: ' + err);
       res.redirect('/dashboard');
+    });
+  },
+};
+
+exports.userTweets = {
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne({email: userEmail}).then(currentUser => {
+      Tweet.find({user: currentUser._id}).sort({date: -1}).then(tweetList => {
+        //sorts tweets in reverse chronological order
+        res.view('userTweets', {
+          title: currentUser.firstName +"'s Tweets",
+          user: currentUser,
+          tweet: tweetList,
+        });
+      });
+    }).catch(err => {
+      console.log('Error loading dashboard: ' + err);
+      res.redirect('/');
     });
   },
 };

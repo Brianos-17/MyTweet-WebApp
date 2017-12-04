@@ -19,8 +19,8 @@ exports.dashboard = {
           title: 'MyTweet Homepage',
           user: currentUser,
           tweet: tweetList,
+        });
       });
-    });
     }).catch(err => {
       console.log('Error loading dashboard: ' + err);
       res.redirect('/');
@@ -218,3 +218,4 @@ exports.followUser = {
     })
   }
 };
+

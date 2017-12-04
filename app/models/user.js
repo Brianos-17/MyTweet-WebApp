@@ -16,10 +16,10 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
-  following: {
+  following: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Following'
-  }
+  }]
 });
 
 const User = mongoose.model('User', userSchema);

@@ -15,8 +15,8 @@ module.exports = [
   { method: 'GET',    path: '/deleteUser/{_id}', config: Dashboard.removeUser },
   { method: 'GET',    path: '/deleteAll/{id}',   config: Dashboard.deleteAll },
   { method: 'GET',    path: '/viewUser/{id}',    config: Dashboard.viewUser },
+  { method: 'GET',    path: '/followUser/{id}',  config: Dashboard.followUser },
   { method: 'GET',    path: '/dashboard/viewUserTweets/{_id}', config: Dashboard.viewUserTweets },
-  { method: 'GET',    path: '/dashboard/followUser/{id}',      config: Dashboard.followUser },
 
   { method: 'POST',   path: '/register/{userType}',       config: Accounts.register },
   { method: 'POST',   path: '/authenticate',              config: Accounts.authenticate },

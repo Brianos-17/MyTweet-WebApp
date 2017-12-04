@@ -205,10 +205,16 @@ exports.followUser = {
   handler: function (req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
     const userId = req.params.id;
-    User.findOne({_id: userEmail}).then(currentUser => {
-      User.findOne({_d: userId}).then(foundUser => {
-
-      })
+    User.findOne({email: userEmail}).then(currentUser => {
+      User.findOne({_id: userId}).then(foundUser => {
+        currentUser.following.push(foundUser._id);
+        currentUser.save();
+        console.log(currentUser.firstName + " is now following " + foundUser.firstName);
+        res.redirect('/dashboard');
+      });
+    }).catch(err => {
+      console.log('Error following user: '  + err);
+      reply.redirect('/globalTimeline')
     })
   }
 };

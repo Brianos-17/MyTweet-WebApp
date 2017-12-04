@@ -200,3 +200,15 @@ exports.viewUser = {
     })
   },
 };
+
+exports.followUser = {
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    const userId = req.params.id;
+    User.findOne({_id: userEmail}).then(currentUser => {
+      User.findOne({_d: userId}).then(foundUser => {
+
+      })
+    })
+  }
+};

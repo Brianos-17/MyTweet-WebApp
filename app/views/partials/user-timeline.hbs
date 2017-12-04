@@ -11,6 +11,9 @@
             {{#unless ../globalTimeline}}
                     <th class="one wide"> Delete </th>
             {{/unless}}
+            {{#if ../globalTimeline}}
+                <th class="one wide"> Follow </th>
+            {{/if}}
         </tr>
         </thead>
         <tbody>
@@ -28,6 +31,10 @@
                         </a>
                     </td>
                 {{/unless}}
+                {{#if ../globalTimeline}}
+                    <td><a href="/followUser/{{user._id}}">
+                        <i class="large add user icon"></i></a></td>
+                {{/if}}
             </tr>
         </div>
         </tbody>

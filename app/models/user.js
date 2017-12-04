@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema({
   admin: {
     type: Boolean,
     default: false
+  },
+  following: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Following'
   }
 });
 

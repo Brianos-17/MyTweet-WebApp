@@ -6,6 +6,7 @@
             <th class="one wide"> User </th>
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
+            <th class="one wide"> Unfollow </th>
         </tr>
         </thead>
         <tbody>
@@ -14,6 +15,7 @@
                 <td><a href="/viewUser/{{user._id}}">{{user.firstName}} {{user.lastName}}</a></td>
                 <td>{{message}}</td>
                 <td>{{date}}</td>
+                <td><a href="/unfollowUser/{{user._id}}"><i class="large red remove user icon" /></a></td>
             </tr>
         </div>
         </tbody>

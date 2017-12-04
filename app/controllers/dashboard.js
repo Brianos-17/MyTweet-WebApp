@@ -12,18 +12,25 @@ const Joi = require('joi');
 exports.dashboard = {
   handler: function (req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
+    let follow = false;
     User.findOne({email: userEmail}).then(currentUser => {
-      Tweet.find({user: currentUser._id}).sort({date: -1}).then(tweetList => {
-        //sorts tweets in reverse chronological order
-        res.view('home', {
-          title: 'MyTweet Homepage',
-          user: currentUser,
-          tweet: tweetList,
+      User.find({_id: currentUser.following}).then(followedUsers => {
+        Tweet.find({user: followedUsers}).populate('user').sort({date: -1}).then(tweetList => {
+          if(tweetList.length === 0){
+            follow = true;
+          }
+          //sorts tweets in reverse chronological order
+          res.view('home', {
+            title: 'MyTweet Homepage',
+            user: currentUser,
+            tweet: tweetList,
+            follow: follow,
+          });
         });
+      }).catch(err => {
+        console.log('Error loading dashboard: ' + err);
+        res.redirect('/');
       });
-    }).catch(err => {
-      console.log('Error loading dashboard: ' + err);
-      res.redirect('/');
     });
   },
 };
@@ -210,6 +217,24 @@ exports.followUser = {
         currentUser.following.push(foundUser._id);
         currentUser.save();
         console.log(currentUser.firstName + " is now following " + foundUser.firstName);
+        res.redirect('/dashboard');
+      });
+    }).catch(err => {
+      console.log('Error following user: '  + err);
+      reply.redirect('/globalTimeline')
+    })
+  }
+};
+
+exports.unfollowUser = {
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    const userId = req.params.id;
+    User.findOne({email: userEmail}).then(currentUser => {
+      User.findOne({_id: userId}).then(foundUser => {
+        currentUser.following.splice(foundUser._id, 1);
+        currentUser.save();
+        console.log(currentUser.firstName + " is no longer following " + foundUser.firstName);
         res.redirect('/dashboard');
       });
     }).catch(err => {

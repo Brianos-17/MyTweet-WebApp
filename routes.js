@@ -18,12 +18,14 @@ module.exports = [
   { method: 'GET',    path: '/followUser/{id}',  config: Dashboard.followUser },
   { method: 'GET',    path: '/unfollowUser/{id}',config: Dashboard.unfollowUser },
   { method: 'GET',    path: '/userTweets',       config: Accounts.userTweets },
+  { method: 'GET',    path: '/getProfilePic',    config: Accounts.getProfilePic },
   { method: 'GET',    path: '/dashboard/viewUserTweets/{_id}', config: Dashboard.viewUserTweets },
 
   { method: 'POST',   path: '/register/{userType}',       config: Accounts.register },
   { method: 'POST',   path: '/authenticate',              config: Accounts.authenticate },
   { method: 'POST',   path: '/addTweet/{userEmail}',      config: Dashboard.addTweet },
   { method: 'POST',   path: '/updateAccount/{userEmail}', config: Accounts.updateAccount },
+  { method: 'POST',   path: '/updateProfilePic/{userEmail}',  config:Accounts.updateProfilePic },
 
   {
     method: 'GET',

@@ -70,7 +70,6 @@ exports.globalTimeline = {
 };
 
 exports.addTweet = {
-  auth: false,
 
   validate: {
     payload: {
@@ -190,7 +189,6 @@ exports.deleteAll = {
 };
 
 exports.viewUser = {
-  auth: false,
   handler: function (req, res) {
     const userId = req.params.id;
     let following = false;

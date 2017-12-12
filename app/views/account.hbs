@@ -4,22 +4,18 @@
     <div class="ui three column grid basic center aligned segment">
         <div class="column left aligned">
             <h3> Member Details </h3>
-            <table class="ui fixed left aligned table">
-                <tr>
-                    <td>Name:</td>
-                    <td>{{user.firstName}} {{user.lastName}}</td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td>{{user.email}}</td>
-                </tr>
-            </table>
-
-            <div class="middle aligned">
-                <img class="ui large image" src="http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png"
-                     alt="Update-Profile icon">
+            <div class="ui card">
+                <div class="card">
+                    <img class="ui large image" src="/getUserPic" onerror="this.src = 'http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png';"
+                         alt="Update-Profile icon">
+                </div>
+                <div class="content">
+                    <div class="description">
+                        <p>Name: {{user.firstName}} {{user.lastName}}</p>
+                        <p>Email: {{user.email}}</p>
+                    </div>
+                </div>
             </div>
-
         </div>
 
         <div class="column left aligned">
@@ -39,8 +35,8 @@
                     <input value="{{user.email}}" placeholder="E-mail Address..." type="email" name="email">
                 </div>
                 <div class="field">
-                <label> Password </label>
-                <input value="{{user.password}}" placeholder="Password..." type="password" name="password">
+                    <label> Password </label>
+                    <input value="{{user.password}}" placeholder="Password..." type="password" name="password">
                 </div>
                 <div class="field">
                     <label> Password Validation </label>
@@ -52,6 +48,15 @@
         </div>
 
         <div class="column left aligned">
+            <h3>Update Profile Picture</h3>
+            <form class="ui segment form" enctype="multipart/form-data" name="updateProfilePic"
+                  action="/updateProfilePic/{{user.email}}" method="POST">
+                <div class="field">
+                    <label> Image </label>
+                    <input type="file" name="profilePic">
+                </div>
+                <button class="ui blue submit button">Update</button>
+            </form>
             {{> form-error}}
         </div>
     </div>

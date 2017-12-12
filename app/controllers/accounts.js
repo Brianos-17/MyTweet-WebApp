@@ -123,7 +123,6 @@ exports.authenticate = {
 };
 
 exports.logout = {
-  auth: false,
   handler: function(req,res) {
     req.cookieAuth.clear();
     res.redirect('/');
@@ -146,7 +145,6 @@ exports.account = {
 };
 
 exports.updateAccount = {
-  auth: false,
 
   validate: {
     payload: {
@@ -212,3 +210,35 @@ exports.userTweets = {
     });
   },
 };
+
+exports.updateProfilePic = {
+  payload: {
+    maxBytes: 209715200,
+    output: 'stream',
+    parse: true,
+    allow: 'multipart/form-data'
+  },
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    const pic = req.payload.profilePic;
+    User.findOne({email: userEmail}).then(foundUser => {
+      foundUser.profilePic.data = pic._data;
+      foundUser.profilePic.contentType = 'image/png';
+      foundUser.save();
+      res.redirect('/account');
+    }).catch(err => {
+      console.log(err);
+      res.redirect('/account');
+    })
+  }
+};
+
+// render picture from database
+exports.getProfilePic = {
+  handler : function (req ,res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    User.findOne({email: userEmail}).then(foundUser => {
+      res(user.profilePic.data).type('image');
+    });
+  }
+}

@@ -19,7 +19,11 @@ const userSchema = mongoose.Schema({
   following: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Following'
-  }]
+  }],
+  profilePic: {
+    data: Buffer,
+    contentType: String,
+  }
 });
 
 const User = mongoose.model('User', userSchema);

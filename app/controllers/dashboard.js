@@ -250,3 +250,12 @@ exports.unfollowUser = {
   }
 };
 
+exports.getProfilePic = {
+  handler: function (req, res) {
+    const userId = req.params.id;
+    User.findOne({_id: userId}).then(foundUser => {
+      res(foundUser.profilePic.data).type('image');
+    })
+  }
+};
+

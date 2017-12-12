@@ -238,7 +238,7 @@ exports.getProfilePic = {
   handler : function (req ,res) {
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne({email: userEmail}).then(foundUser => {
-      res(user.profilePic.data).type('image');
+      res(foundUser.profilePic.data).type('image');
     });
   }
 }

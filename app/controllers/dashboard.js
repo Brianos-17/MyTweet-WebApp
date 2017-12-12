@@ -16,10 +16,10 @@ exports.dashboard = {
     User.findOne({email: userEmail}).then(currentUser => {
       User.find({_id: currentUser.following}).then(followedUsers => {
         Tweet.find({user: followedUsers}).populate('user').sort({date: -1}).then(tweetList => {
+          //sorts tweets in reverse chronological order
           if(tweetList.length === 0){
             follow = true;
           }
-          //sorts tweets in reverse chronological order
           res.view('home', {
             title: 'MyTweet Homepage',
             user: currentUser,
@@ -107,7 +107,7 @@ exports.addTweet = {
       return tweet.save();
     }).then(newTweet => {
       console.log('New tweet added:' + tweet._id);
-      res.redirect('/dashboard');
+      res.redirect('/userTweets');
     }).catch(err => {
       console.log('Error saving tweet: ' + err);
       res.redirect('/');
@@ -193,14 +193,22 @@ exports.viewUser = {
   auth: false,
   handler: function (req, res) {
     const userId = req.params.id;
+    let following = false;
     User.findOne({_id: userId}).then(foundUser => {
-      Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
-        res.view('viewUser', {
-          title: foundUser.firstName + "'s Tweets",
-          user: foundUser,
-          tweet: tweets
+      User.find({_id: foundUser.following}).then(followedUser => {
+        Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
+          if (followedUser.length > 0){
+            following = true;
+          }
+          res.view('viewUser', {
+            title: foundUser.firstName + "'s Tweets",
+            user: foundUser,
+            tweet: tweets,
+            following: following,
+            followedUser: followedUser
+          });
         });
-      });
+      })
     }).catch(err => {
       console.log('Error loading user details: ' + err);
       res.redirect('/globalTimeline');

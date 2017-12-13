@@ -19,6 +19,7 @@ module.exports = [
   { method: 'GET',    path: '/unfollowUser/{id}',config: Dashboard.unfollowUser },
   { method: 'GET',    path: '/userTweets',       config: Accounts.userTweets },
   { method: 'GET',    path: '/getProfilePic',    config: Accounts.getProfilePic },
+  { method: 'GET',    path: '/getTweetImg/{id}', config: Accounts.getTweetImg },
   { method: 'GET',    path: '/getProfilePic/{id}',             config: Dashboard.getProfilePic },
   { method: 'GET',    path: '/dashboard/viewUserTweets/{_id}', config: Dashboard.viewUserTweets },
 

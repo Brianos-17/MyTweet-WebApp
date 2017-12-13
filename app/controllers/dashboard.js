@@ -74,13 +74,19 @@ exports.addTweet = {
   validate: {
     payload: {
       message: Joi.string().max(140).required(),
+      img: Joi.optional(),
+      maxBytes: 209715200, // Validates the payload image via size
+      output: 'stream',
+      parse: true,
+      allow: 'multipart/form-data'
     },
     failAction: function(req, res, source, err) {
+      console.log(err);
       const userEmail = req.auth.credentials.loggedInUser;
       User.findOne({email: userEmail}).then(currentUser => {
         Tweet.find({user: currentUser._id}).then(tweetList => {
-          res.view('home', {
-          title: 'MyTweet Homepage',
+          res.view('userTweets', {
+          title: currentUser.firstName + "'s Tweets",
           user: currentUser,
           tweet: tweetList,
           errors: err.data.details,
@@ -97,19 +103,22 @@ exports.addTweet = {
     let userId = null;
     let tweet = null;
     User.findOne({ email: userEmail }).then(user => {
-      let message = req.payload;
+      const message = req.payload.message;
+      const img = req.payload.img;
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       userId = user._id;
-      tweet = new Tweet(message);
+      tweet = new Tweet({message: message});
       tweet.date = date;
       tweet.user = userId;
+      tweet.img.data = img._data;
+      tweet.img.contentType = 'image/png';
       return tweet.save();
     }).then(newTweet => {
       console.log('New tweet added:' + tweet._id);
       res.redirect('/userTweets');
     }).catch(err => {
       console.log('Error saving tweet: ' + err);
-      res.redirect('/');
+      res.redirect('/userTweets');
     });
   },
 };

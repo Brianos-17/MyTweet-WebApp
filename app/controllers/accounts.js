@@ -212,8 +212,9 @@ exports.userTweets = {
 };
 
 exports.updateProfilePic = {
+
   payload: {
-    maxBytes: 209715200,
+    maxBytes: 209715200, // Validates the payload image via size
     output: 'stream',
     parse: true,
     allow: 'multipart/form-data'

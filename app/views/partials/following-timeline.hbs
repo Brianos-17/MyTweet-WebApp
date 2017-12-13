@@ -16,7 +16,11 @@
                     <img class="ui tiny image" src="/getProfilePic/{{user._id}}"
                          onerror="this.src = 'http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png';">
                 </a></td>
-                <td>{{message}}</td>
+                <td>
+                    <p>{{message}}</p>
+                    {{#if img}}
+                        <p><img src=""/></p>{{/if}}
+                </td>
                 <td>{{date}}</td>
                 <td><a href="/unfollowUser/{{user._id}}"><i class="large red remove user icon" /></a></td>
             </tr>

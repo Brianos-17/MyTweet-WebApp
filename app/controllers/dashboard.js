@@ -238,7 +238,8 @@ exports.unfollowUser = {
     const userId = req.params.id;
     User.findOne({email: userEmail}).then(currentUser => {
       User.findOne({_id: userId}).then(foundUser => {
-        currentUser.following.splice(foundUser._id, 1);
+        const index = currentUser.following.indexOf(foundUser._id);
+        currentUser.following.splice(index, 1);
         currentUser.save();
         console.log(currentUser.firstName + " is no longer following " + foundUser.firstName);
         res.redirect('/dashboard');

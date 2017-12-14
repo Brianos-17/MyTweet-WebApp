@@ -8,11 +8,10 @@
             {{/if}}
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
-            {{#unless ../globalTimeline}}
-                    <th class="one wide"> Delete </th>
-            {{/unless}}
             {{#if ../globalTimeline}}
                 <th class="one wide"> Follow </th>
+            {{else}}
+                <th class="one wide"> Delete </th>
             {{/if}}
         </tr>
         </thead>
@@ -27,7 +26,8 @@
                 {{/if}}
                 <td>
                     <p>{{message}}</p>
-                    <p>{{img}}</p>
+                    <p><img class="ui medium image" src="/getTweetImg/{{_id}}"
+                            onerror="this.src = 'http://res.cloudinary.com/dlswdhwpl/image/upload/v1513169512/error-image-generic_vblzxw.png';"/></p>
                 </td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}

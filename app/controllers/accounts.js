@@ -234,12 +234,20 @@ exports.updateProfilePic = {
   }
 };
 
-// render picture from database
 exports.getProfilePic = {
-  handler : function (req ,res) {
+  handler: function (req ,res) {
     const userEmail = req.auth.credentials.loggedInUser;
     User.findOne({email: userEmail}).then(foundUser => {
       res(foundUser.profilePic.data).type('image');
     });
   }
-}
+};
+
+exports.getTweetImg = {
+  handler: function (req, res) {
+    const tweetId = req.params._id;
+    Tweet.findOne({_id: tweetId}).then(foundTweet => {
+      res(foundTweet.img.data).type('image');
+    });
+  }
+};

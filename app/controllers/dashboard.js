@@ -70,8 +70,8 @@ exports.globalTimeline = {
 };
 
 exports.addTweet = {
-
   validate: {
+
     payload: {
       message: Joi.string().max(140).required(),
       img: Joi.optional(),
@@ -100,21 +100,20 @@ exports.addTweet = {
   },
   handler: function(req, res) {
     const userEmail = req.params.userEmail;
+    const thisImg = req.payload.img;
     let userId = null;
     let tweet = null;
     User.findOne({ email: userEmail }).then(user => {
       const message = req.payload.message;
-      const img = req.payload.img;
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       userId = user._id;
       tweet = new Tweet({message: message});
       tweet.date = date;
       tweet.user = userId;
-      tweet.img.data = img._data;
+      tweet.img.data = thisImg;
       tweet.img.contentType = 'image/png';
-      return tweet.save();
-    }).then(newTweet => {
-      console.log('New tweet added:' + tweet._id);
+      tweet.save();
+      console.log('New tweet added: ' + tweet._id);
       res.redirect('/userTweets');
     }).catch(err => {
       console.log('Error saving tweet: ' + err);
@@ -134,12 +133,12 @@ exports.removeTweet = {
         if(currentUser.admin){
           res.redirect('/dashboard/viewUserTweets/' + tweet.user);
         } else {
-          res.redirect('/dashboard');
+          res.redirect('/userTweets');
         }
     });
     }).catch(err => {
       console.log('Error deleting tweet:' + err);
-      res.redirect('/dashboard');
+      res.redirect('/userTweets');
     });
   },
 };

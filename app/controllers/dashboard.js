@@ -74,7 +74,7 @@ exports.addTweet = {
 
     payload: {
       message: Joi.string().max(140).required(),
-      img: Joi.optional(),
+      img: Joi.allow(null),
       maxBytes: 209715200, // Validates the payload image via size
       output: 'stream',
       parse: true,
@@ -100,7 +100,7 @@ exports.addTweet = {
   },
   handler: function(req, res) {
     const userEmail = req.params.userEmail;
-    const thisImg = req.payload.img;
+    const img = req.payload.img;
     let userId = null;
     let tweet = null;
     User.findOne({ email: userEmail }).then(user => {
@@ -110,8 +110,10 @@ exports.addTweet = {
       tweet = new Tweet({message: message});
       tweet.date = date;
       tweet.user = userId;
-      tweet.img.data = thisImg;
-      tweet.img.contentType = 'image/png';
+      if(img.length) { //Checks payload to see if image is present or not
+        tweet.img.data = img;
+        tweet.img.contentType = 'image/png';
+      }
       tweet.save();
       console.log('New tweet added: ' + tweet._id);
       res.redirect('/userTweets');

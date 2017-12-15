@@ -12,18 +12,25 @@ const Joi = require('joi');
 exports.dashboard = {
   handler: function (req, res) {
     const userEmail = req.auth.credentials.loggedInUser;
+    let follow = false;
     User.findOne({email: userEmail}).then(currentUser => {
-      Tweet.find({user: currentUser._id}).sort({date: -1}).then(tweetList => {
-        //sorts tweets in reverse chronological order
-        res.view('home', {
-          title: 'MyTweet Homepage',
-          user: currentUser,
-          tweet: tweetList,
+      User.find({_id: currentUser.following}).then(followedUsers => {
+        Tweet.find({user: followedUsers}).populate('user').sort({date: -1}).then(tweetList => {
+          //sorts tweets in reverse chronological order
+          if(tweetList.length === 0){
+            follow = true;
+          }
+          res.view('home', {
+            title: 'MyTweet Homepage',
+            user: currentUser,
+            tweet: tweetList,
+            follow: follow,
+          });
+        });
+      }).catch(err => {
+        console.log('Error loading dashboard: ' + err);
+        res.redirect('/');
       });
-    });
-    }).catch(err => {
-      console.log('Error loading dashboard: ' + err);
-      res.redirect('/');
     });
   },
 };
@@ -63,18 +70,23 @@ exports.globalTimeline = {
 };
 
 exports.addTweet = {
-  auth: false,
-
   validate: {
+
     payload: {
       message: Joi.string().max(140).required(),
+      img: Joi.allow(null),
+      maxBytes: 209715200, // Validates the payload image via size
+      output: 'stream',
+      parse: true,
+      allow: 'multipart/form-data'
     },
     failAction: function(req, res, source, err) {
+      console.log(err);
       const userEmail = req.auth.credentials.loggedInUser;
       User.findOne({email: userEmail}).then(currentUser => {
         Tweet.find({user: currentUser._id}).then(tweetList => {
-          res.view('home', {
-          title: 'MyTweet Homepage',
+          res.view('userTweets', {
+          title: currentUser.firstName + "'s Tweets",
           user: currentUser,
           tweet: tweetList,
           errors: err.data.details,
@@ -88,22 +100,26 @@ exports.addTweet = {
   },
   handler: function(req, res) {
     const userEmail = req.params.userEmail;
+    const img = req.payload.img;
     let userId = null;
     let tweet = null;
     User.findOne({ email: userEmail }).then(user => {
-      let message = req.payload;
+      const message = req.payload.message;
       const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       userId = user._id;
-      tweet = new Tweet(message);
+      tweet = new Tweet({message: message});
       tweet.date = date;
       tweet.user = userId;
-      return tweet.save();
-    }).then(newTweet => {
-      console.log('New tweet added:' + tweet._id);
-      res.redirect('/dashboard');
+      if(img.length) { //Checks payload to see if image is present or not
+        tweet.img.data = img;
+        tweet.img.contentType = 'image/png';
+      }
+      tweet.save();
+      console.log('New tweet added: ' + tweet._id);
+      res.redirect('/userTweets');
     }).catch(err => {
       console.log('Error saving tweet: ' + err);
-      res.redirect('/');
+      res.redirect('/userTweets');
     });
   },
 };
@@ -119,12 +135,12 @@ exports.removeTweet = {
         if(currentUser.admin){
           res.redirect('/dashboard/viewUserTweets/' + tweet.user);
         } else {
-          res.redirect('/dashboard');
+          res.redirect('/userTweets');
         }
     });
     }).catch(err => {
       console.log('Error deleting tweet:' + err);
-      res.redirect('/dashboard');
+      res.redirect('/userTweets');
     });
   },
 };
@@ -183,20 +199,74 @@ exports.deleteAll = {
 };
 
 exports.viewUser = {
-  auth: false,
   handler: function (req, res) {
     const userId = req.params.id;
+    let following = false;
     User.findOne({_id: userId}).then(foundUser => {
-      Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
-        res.view('viewUser', {
-          title: foundUser.firstName + "'s Tweets",
-          user: foundUser,
-          tweet: tweets
+      User.find({_id: foundUser.following}).then(followedUser => {
+        Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
+          if (followedUser.length > 0){
+            following = true;
+          }
+          res.view('viewUser', {
+            title: foundUser.firstName + "'s Tweets",
+            user: foundUser,
+            tweet: tweets,
+            following: following,
+            followedUser: followedUser
+          });
         });
-      });
+      })
     }).catch(err => {
       console.log('Error loading user details: ' + err);
       res.redirect('/globalTimeline');
     })
   },
 };
+
+exports.followUser = {
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    const userId = req.params.id;
+    User.findOne({email: userEmail}).then(currentUser => {
+      User.findOne({_id: userId}).then(foundUser => {
+        currentUser.following.push(foundUser._id);
+        currentUser.save();
+        console.log(currentUser.firstName + " is now following " + foundUser.firstName);
+        res.redirect('/dashboard');
+      });
+    }).catch(err => {
+      console.log('Error following user: '  + err);
+      reply.redirect('/globalTimeline')
+    })
+  }
+};
+
+exports.unfollowUser = {
+  handler: function (req, res) {
+    const userEmail = req.auth.credentials.loggedInUser;
+    const userId = req.params.id;
+    User.findOne({email: userEmail}).then(currentUser => {
+      User.findOne({_id: userId}).then(foundUser => {
+        const index = currentUser.following.indexOf(foundUser._id);
+        currentUser.following.splice(index, 1);
+        currentUser.save();
+        console.log(currentUser.firstName + " is no longer following " + foundUser.firstName);
+        res.redirect('/dashboard');
+      });
+    }).catch(err => {
+      console.log('Error following user: '  + err);
+      reply.redirect('/globalTimeline')
+    })
+  }
+};
+
+exports.getProfilePic = {
+  handler: function (req, res) {
+    const userId = req.params.id;
+    User.findOne({_id: userId}).then(foundUser => {
+      res(foundUser.profilePic.data).type('image');
+    })
+  }
+};
+

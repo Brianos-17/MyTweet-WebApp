@@ -1,0 +1,30 @@
+
+{{#each tweet}}
+    <table class="ui fixed centre aligned table">
+        <thead>
+        <tr>
+            <th class="one wide"> User </th>
+            <th class="six wide"> Tweet </th>
+            <th class="two wide"> Date </th>
+            <th class="one wide"> Unfollow </th>
+        </tr>
+        </thead>
+        <tbody>
+        <div class="ui bulleted list">
+            <tr>
+                <td><a href="/viewUser/{{user._id}}">
+                    <img class="ui tiny image" src="/getProfilePic/{{user._id}}"
+                         onerror="this.src = 'http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png';" />
+                </a></td>
+                <td>
+                    <p>{{message}}</p>
+                    <p><img class="ui medium image" src="/getTweetImg/{{id}}" />
+                    </p>
+                </td>
+                <td>{{date}}</td>
+                <td><a href="/unfollowUser/{{user._id}}"><i class="large red remove user icon" /></a></td>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+{{/each}}

@@ -1,0 +1,11 @@
+{{> menu id ="userTweets"}}
+
+<section class="ui raised segment">
+    <h3 class="ui center aligned header">
+        Have something to say?
+    </h3>
+    {{> new-tweet}}
+    {{> form-error}}
+    <h3 class="ui center aligned header"> {{user.firstName}}'s Timeline </h3>
+    {{> user-timeline}}
+</section>

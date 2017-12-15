@@ -8,18 +8,26 @@
             {{/if}}
             <th class="six wide"> Tweet </th>
             <th class="two wide"> Date </th>
-            {{#unless ../globalTimeline}}
-                    <th class="one wide"> Delete </th>
-            {{/unless}}
+            {{#if ../globalTimeline}}
+                <th class="one wide"> Follow </th>
+            {{else}}
+                <th class="one wide"> Delete </th>
+            {{/if}}
         </tr>
         </thead>
         <tbody>
         <div class="ui bulleted list">
             <tr>
                 {{#if ../globalTimeline}}
-                    <td><a href="/viewUser/{{user._id}}">{{user.firstName}} {{user.lastName}}</a></td>
+                    <td><a href="/viewUser/{{user._id}}">
+                        <img class="ui tiny avatar image" src="/getProfilePic/{{user._id}}"
+                             onerror="this.src = 'http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png';">
+                    </a></td>
                 {{/if}}
-                <td>{{message}}</td>
+                <td>
+                    <p>{{message}}</p>
+                        <p><img class="ui medium image" src="/getTweetImg/{{_id}}"/></p>
+                </td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}
                     <td>
@@ -28,6 +36,9 @@
                         </a>
                     </td>
                 {{/unless}}
+                {{#if ../globalTimeline}}
+                    <td><a href="/followUser/{{user._id}}"><i class="large add user icon" /></a></td>
+                {{/if}}
             </tr>
         </div>
         </tbody>

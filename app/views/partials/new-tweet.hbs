@@ -1,9 +1,15 @@
 <div class="ui six column">
-    <form class="ui stacked segment form" name="addTweet" action="/addTweet/{{user.email}}" method="POST">
+    <form class="ui stacked segment form" name="addTweet" enctype="multipart/form-data"
+          action="/addTweet/{{user.email}}" method="POST">
         <div class="field">
             <label>Tweet</label>
             <input name="message" type="text" placeholder="What's on your mind?" maxlength="140">
         </div>
-        <button class="ui blue submit button"> Send </button>
+        <div class="field">
+            <label>Image</label>
+            <input type="file" name="img">
+        </div>
+
+        <button class="ui blue submit button"> Tweet </button>
     </form>
 </div>

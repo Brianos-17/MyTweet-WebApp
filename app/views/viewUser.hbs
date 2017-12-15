@@ -1,6 +1,22 @@
 {{> menu}}
 
 <section class="ui raised segment">
+    <h4 class="ui center aligned header">
+        {{#if following}}
+            {{user.firstName}} {{user.lastName}} currently follows
+            <table class="ui fixed center aligned table">
+                <tr>
+                    {{#each followedUser}}
+                        <td class="ui center aligned">
+                            <a href="/viewUser/{{_id}}">{{firstName}} {{lastName}}</a>
+                        </td>
+                    {{/each}}
+                </tr>
+            </table>
+        {{else}}
+            Looks like {{user.firstName}} {{user.lastName}} isn't following anyone
+        {{/if}}
+    </h4>
     <h3 class="ui center aligned header">
         Here are {{user.firstName}} {{user.lastName}}'s Tweets
     </h3>

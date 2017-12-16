@@ -9,6 +9,8 @@
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
+const saltrounds = 10; //Salts passwords 10 times
 
 exports.main = {
   auth: false,
@@ -56,17 +58,21 @@ exports.register = {
   handler: function(req, res) {
     const userType = req.params.userType;
     const user = new User(req.payload);
-    user.save().then(newUser => {
-      console.log('New user registered: ' + newUser.firstName +
-          ' ' + newUser.lastName);
-      if(userType === 'admin') {
-        res.redirect('/adminDashboard')
-      } else{
-        res.redirect('/login');
-      }
-    }).catch(err => {
-      res.redirect('/');
-      console.log('Error registering new user: ' + err);
+    const plaintextPassword = user.password;
+    bcrypt.hash(plaintextPassword, saltrounds, function(err, hash) {
+      user.password = hash;
+      user.save().then(newUser => {
+        console.log('New user registered: ' + newUser.firstName +
+            ' ' + newUser.lastName);
+        if(userType === 'admin') {
+          res.redirect('/adminDashboard')
+        } else{
+          res.redirect('/login');
+        }
+      }).catch(err => {
+        res.redirect('/');
+        console.log('Error registering new user: ' + err);
+      });
     });
   },
 };
@@ -102,22 +108,22 @@ exports.authenticate = {
   handler: function (req, res) {
     const user = req.payload;
     User.findOne({email: user.email}).then(foundUser => {
-      if (foundUser && foundUser.password === user.password) {
-        req.cookieAuth.set({
-          loggedIn: true,
-          loggedInUser: user.email,//assigns the users email as their cookie authentication
-        });
-        if (foundUser.admin){
-          res.redirect('/adminDashboard');
-        } else {
-          res.redirect('/dashboard');
+      bcrypt.compare(user.password, foundUser.password, function(err, isValid) {
+        if(isValid) {
+          req.cookieAuth.set({
+            loggedIn: true,
+            loggedInUser: user.email,//assigns the users email as their cookie authentication
+          });
+          if (foundUser.admin){
+            res.redirect('/adminDashboard');
+          } else {
+            res.redirect('/dashboard');
+          }
         }
-      } else {
-        res.redirect('/login');
-      }
+      });
     }).catch(err => {
       console.log('Error logging in: ' + err);
-      res.redirect('/');
+      res.redirect('/login');
     });
   },
 };

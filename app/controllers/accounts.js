@@ -37,11 +37,11 @@ exports.register = {
 
   validate: {
      payload: {
-       firstName: Joi.string().required(),
-       lastName: Joi.string().required(),
-       password: Joi.string().required(),
-       passwordValid: Joi.string().required().valid(Joi.ref('password')),
-       email: Joi.string().email().required(),
+       firstName: Joi.string().regex(/^[a-z]+$/i).required(), // Only allows letters, case insensitive
+       lastName: Joi.string().regex(/^[a-z]+$/i).required(), // Only allows letters, case insensitive
+       password: Joi.string().alphanum().min(5).required(), // Password can only contain alpha-numeric characters and must be at least 5 characters long
+       passwordValid: Joi.string().required().valid(Joi.ref('password')), // Must match password
+       email: Joi.string().email().required(), // Must be a valid email format
      },
     options: {
        abortEarly: false,
@@ -91,7 +91,7 @@ exports.authenticate = {
 
   validate: {
     payload: {
-      password: Joi.string().required(),
+      password: Joi.string().alphanum().min(5).required(),
       email: Joi.string().email().required(),
     },
     options: {
@@ -154,10 +154,10 @@ exports.updateAccount = {
 
   validate: {
     payload: {
-      firstName: Joi.string().required(),
-      lastName: Joi.string().required(),
-      password: Joi.string().required(),
-      passwordValid: Joi.string().required().valid(Joi.ref('password')),//must be the same as password
+      firstName: Joi.string().regex(/^[a-z]+$/i).required(),
+      lastName: Joi.string().regex(/^[a-z]+$/i).required(),
+      password: Joi.string().alphanum().min(5).required(),
+      passwordValid: Joi.string().required().valid(Joi.ref('password')),
       email: Joi.string().email().required(),
     },
     options: {

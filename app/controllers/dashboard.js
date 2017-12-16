@@ -74,7 +74,7 @@ exports.addTweet = {
 
     payload: {
       message: Joi.string().max(140).required(),
-      img: Joi.allow(null),
+      img: Joi.allow(null), // Allows users to include no image
       maxBytes: 209715200, // Validates the payload image via size
       output: 'stream',
       parse: true,

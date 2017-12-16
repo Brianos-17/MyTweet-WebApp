@@ -204,7 +204,7 @@ exports.viewUser = {
     let following = false;
     User.findOne({_id: userId}).then(foundUser => {
       User.find({_id: foundUser.following}).then(followedUser => {
-        Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
+        Tweet.find({user: foundUser._id}).populate('user').sort({date: -1}).then(tweets => {
           if (followedUser.length > 0){
             following = true;
           }

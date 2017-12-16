@@ -18,9 +18,9 @@ suite('User API tests', function () {
 
     assert.equal(4, users.length);
 
-    assert.equal(users[0].firstName, 'Bart');
+    assert.equal(users[0].firstName, 'Homer');
     assert.equal(users[0].lastName, 'Simpson');
-    assert.equal(users[0].email, 'bart@simpson.com');
+    assert.equal(users[0].email, 'homer@simpson.com');
     assert.equal(users[0].password, 'secret');
 
     assert.equal(users[1].firstName, 'Marge');
@@ -28,15 +28,20 @@ suite('User API tests', function () {
     assert.equal(users[1].email, 'marge@simpson.com');
     assert.equal(users[1].password, 'secret');
 
-    assert.equal(users[2].firstName, 'Homer');
+    assert.equal(users[2].firstName, 'Lisa');
     assert.equal(users[2].lastName, 'Simpson');
-    assert.equal(users[2].email, 'homer@simpson.com');
+    assert.equal(users[2].email, 'lisa@simpson.com');
     assert.equal(users[2].password, 'secret');
 
     assert.equal(users[3].firstName, 'Maggie');
     assert.equal(users[3].lastName, 'Simpson');
     assert.equal(users[3].email, 'maggie@simpson.com');
     assert.equal(users[3].password, 'secret');
+
+    assert.equal(users[4].firstName, 'Bart');
+    assert.equal(users[4].lastName, 'Simpson');
+    assert.equal(users[4].email, 'bart@simpson.com');
+    assert.equal(users[4].password, 'secret');
   });
 
   test('get one user', function () {
@@ -45,7 +50,7 @@ suite('User API tests', function () {
     let res = request('GET', usersURL);
     const users = JSON.parse(res.getBody('utf8'));
 
-    const oneUserUrl = usersURL + '/' + users[0]._id;
+    const oneUserUrl = usersURL + '/' + users[4]._id;
     res = request('GET', oneUserUrl);
     const oneUser = JSON.parse(res.getBody('utf8'));
 
@@ -60,9 +65,9 @@ suite('User API tests', function () {
 
     const usersURL = 'http://localhost:4000/api/users';
     const newUser = {
-      firstName: 'Lisa',
-      lastName: 'Simpson',
-      email: 'lisa@simpson.com',
+      firstName: 'Ned',
+      lastName: 'Flanders',
+      email: 'ned@flanders.com',
       password: 'secret',
       admin: false
     };
@@ -70,9 +75,9 @@ suite('User API tests', function () {
     const res = request('POST', usersURL, { json: newUser });
     const returnedUser = JSON.parse(res.getBody('utf8'));
 
-    assert.equal(returnedUser.firstName, 'Lisa');
-    assert.equal(returnedUser.lastName, 'Simpson');
-    assert.equal(returnedUser.email, 'lisa@simpson.com');
+    assert.equal(returnedUser.firstName, 'Ned');
+    assert.equal(returnedUser.lastName, 'Flanders');
+    assert.equal(returnedUser.email, 'ned@flanders.com');
     assert.equal(returnedUser.password, 'secret');
     assert.equal(returnedUser.admin, false);
   });

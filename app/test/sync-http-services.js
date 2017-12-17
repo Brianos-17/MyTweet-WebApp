@@ -12,8 +12,8 @@ class SyncHttpService {
   }
 
   get(url) {
-    var returnedObj = null;
-    var res = request('GET', this.baseUrl + url);
+    let returnedObj = null;
+    const res = request('GET', this.baseUrl + url);
     if (res.statusCode < 300) {
       returnedObj = JSON.parse(res.getBody('utf8'));
     }
@@ -22,13 +22,18 @@ class SyncHttpService {
   }
 
   post(url, obj) {
-    var returnedObj = null;
-    var res = request('POST', this.baseUrl + url, { json: obj });
+    let returnedObj = null;
+    const res = request('POST', this.baseUrl + url, { json: obj });
     if (res.statusCode < 300) {
       returnedObj = JSON.parse(res.getBody('utf8'));
     }
 
     return returnedObj;
+  }
+
+  delete (url) {
+    const res = request('DELETE', this.baseUrl + url);
+    return res.statusCode;
   }
 }
 

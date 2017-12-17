@@ -4,7 +4,7 @@
  */
 'use strict';
 
-const SyncHttpService = require('./sync-http-service');
+const SyncHttpService = require('./sync-http-services');
 const baseUrl = 'http://localhost:4000';
 
 class MyTweetWebService {

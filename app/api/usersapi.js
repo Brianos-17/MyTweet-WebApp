@@ -13,7 +13,10 @@ exports.findOne = {
   auth: false,
   handler: function(req, res) {
     User.findOne({_id: req.params.id }).then(user => {
-      res(user);
+      if(user != null){
+        res(user);
+      }
+      res(Boom.notFound('User id not found'));
     }).catch(err => {
       res(Boom.notFound('User id not found: ' + err))
     });

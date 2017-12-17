@@ -13,7 +13,10 @@ exports.findOne = {
   auth: false,
   handler: function(req, res) {
     Tweet.findOne({_id: req.params.id}).then(tweet => {
-      res(tweet);
+      if(tweet !== null){
+        res(tweet);
+      }
+      res(Boom.notFound('Error finding tweet id'));
     }).catch(err => {
       res(Boom.notFound('Error finding tweet id: ' + err));
     });

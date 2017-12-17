@@ -51,8 +51,7 @@ suite('User API tests', function () {
     const tweetURL = 'http://localhost:4000/api/tweet';
     const newTweet = {
       message: 'This is a new tweet',
-      date: '2017-11-04 20:00:00',
-      user: '59fb5d7a7a33fc2e10b243e2'
+      date: '2017-11-04 20:00:00'
     };
 
     const res = request('POST', tweetURL, {json: newTweet});

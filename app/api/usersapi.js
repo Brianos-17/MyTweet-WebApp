@@ -11,7 +11,9 @@ const utils = require('./utils.js');
 
 //Method for finding one user
 exports.findOne = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function(req, res) {
     User.findOne({_id: req.params.id }).then(user => {
       if(user != null){
@@ -26,7 +28,9 @@ exports.findOne = {
 
 //Method to find all users
 exports.findAll = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function (req, res) {
     User.find({}).exec().then(users => {
       res(users);
@@ -38,7 +42,9 @@ exports.findAll = {
 
 //Method for creating a new user
 exports.addNewUser = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function (req, res) {
     const user = new User(req.payload);
     user.save().then(newUser => {
@@ -51,7 +57,9 @@ exports.addNewUser = {
 
 //Method to delete one User
 exports.deleteOne = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function (req, res) {
     User.remove({_id: req.params.id}).then(user => {
       res(user).code(204);// 204: No content, ensures deletion
@@ -63,7 +71,9 @@ exports.deleteOne = {
 
 //Method to delete all user
 exports.deleteAll = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function(req, res) {
     User.remove({}).then(err => {
       res().code(204);

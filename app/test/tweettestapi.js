@@ -10,9 +10,9 @@ const MyTweetWebService = require('./mytweetwebservice');
 const fixtures = require('./fixtures.json');
 const _ = require('lodash');
 
-suite('User API tests', function () {
+suite('Tweet API tests', function () {
 
-  let tweets = fixtures.users;
+  let tweets = fixtures.tweets;
   let newTweet = fixtures.newTweet;
 
   const myTweetWebService = new MyTweetWebService('http://localhost:4000');
@@ -40,9 +40,9 @@ suite('User API tests', function () {
   });
 
   test('get invalid tweet', function () {
-    const tweet1 = myTweetWebService.getUser('1234');
+    const tweet1 = myTweetWebService.getTweet('1234');
     assert.isNull(tweet1);
-    const tweet2 = myTweetWebService.getUser('012345678901234567890123');
+    const tweet2 = myTweetWebService.getTweet('012345678901234567890123');
     assert.isNull(tweet2);
   });
 
@@ -59,7 +59,7 @@ suite('User API tests', function () {
     assert(myTweetWebService.getTweet(tweet._id) == null);
   });
 
-  test('get user detail', function () {
+  test('get tweet detail', function () {
     for (let tweet of tweets) {
       myTweetWebService.createTweet(tweet);
     }

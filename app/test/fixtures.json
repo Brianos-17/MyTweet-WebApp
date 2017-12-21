@@ -1,5 +1,5 @@
 {
-  "donationService": "http://localhost:4000",
+  "myTweetWebService": "http://localhost:4000",
   "users": [
     {
       "firstName": "Homer",

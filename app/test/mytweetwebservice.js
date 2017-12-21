@@ -52,6 +52,14 @@ class MyTweetWebService {
   deleteAllTweets() {
     return this.httpService.delete('/api/tweet');
   }
+
+  login(user) {
+    return this.httpService.setAuth('/api/users/authenticate', user);
+  }
+
+  logout() {
+    this.httpService.clearAuth();
+  }
 }
 
 module.exports = MyTweetWebService;

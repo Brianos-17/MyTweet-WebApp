@@ -3,6 +3,7 @@
  */
 
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 //Creates token based on user data
 exports.createToken = function (user) {
@@ -21,6 +22,17 @@ exports.decodeToken = function (token) {
     userInfo.email = decoded.email;
   } catch (e) {
   }
-
   return userInfo;
+};
+
+exports.validate = function (decoded, request, callback) {
+  User.findOne({ _id: decoded.id }).then(user => {
+    if (user != null) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  }).catch(err => {
+    callback(null, false);
+  });
 };

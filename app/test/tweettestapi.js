@@ -18,11 +18,11 @@ suite('Tweet API tests', function () {
   const myTweetWebService = new MyTweetWebService('http://localhost:4000');
 
   beforeEach(function () { //Ensures all test data is reset before each test in case previous test failed
-    myTweetWebService.deleteAllTweets();
+    // myTweetWebService.deleteAllTweets();
   });
 
   afterEach(function () { //Ensures all test data is reset after each test
-    myTweetWebService.deleteAllTweets();
+    // myTweetWebService.deleteAllTweets();
   });
 
   test('get all tweets', function () {

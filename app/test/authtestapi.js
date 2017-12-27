@@ -17,11 +17,11 @@ suite('Auth API tests', function () {
   const myTweetWebService = new MyTweetWebService('http://localhost:4000');
 
   beforeEach(function () {
-    myTweetWebService.deleteAllUsers();
+    // myTweetWebService.deleteAllUsers();
   });
 
   afterEach(function () {
-    myTweetWebService.deleteAllUsers();
+    // myTweetWebService.deleteAllUsers();
   });
 
   test('login-logout', function () {

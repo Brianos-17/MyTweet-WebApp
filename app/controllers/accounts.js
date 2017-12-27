@@ -11,6 +11,7 @@ const Tweet = require('../models/tweet');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const saltrounds = 10; //Salts passwords 10 times
+const utils = require('../api/utils');
 
 exports.main = {
   auth: false,
@@ -110,6 +111,8 @@ exports.authenticate = {
     User.findOne({email: user.email}).then(foundUser => {
       bcrypt.compare(user.password, foundUser.password, function(err, isValid) {
         if(isValid) {
+          // const token = utils.createToken(foundUser);
+          // console.log(token);
           req.cookieAuth.set({
             loggedIn: true,
             loggedInUser: user.email,//assigns the users email as their cookie authentication

@@ -1,6 +1,6 @@
 
 {{#each tweet}}
-    <table class="ui fixed centre aligned table">
+    <table class="ui fixed table">
         <thead>
         <tr>
             <th class="one wide"> User </th>
@@ -18,8 +18,9 @@
                 </a></td>
                 <td>
                     <p>{{message}}</p>
-                    <p><img class="ui medium image" src="/getTweetImg/{{id}}" />
-                    </p>
+                    {{#if img.data}}
+                        <p><img class="ui medium image" src="/getTweetImg/{{id}}" /></p>
+                    {{/if}}
                 </td>
                 <td>{{date}}</td>
                 <td><a href="/unfollowUser/{{user._id}}"><i class="large red remove user icon" /></a></td>

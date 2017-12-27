@@ -7,13 +7,19 @@
 
 const User = require('../models/user');
 const Boom = require('boom');
+const utils = require('./utils.js');
 
 //Method for finding one user
 exports.findOne = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function(req, res) {
     User.findOne({_id: req.params.id }).then(user => {
-      res(user);
+      if(user != null){
+        res(user);
+      }
+      res(Boom.notFound('User id not found'));
     }).catch(err => {
       res(Boom.notFound('User id not found: ' + err))
     });
@@ -22,7 +28,9 @@ exports.findOne = {
 
 //Method to find all users
 exports.findAll = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function (req, res) {
     User.find({}).exec().then(users => {
       res(users);
@@ -34,7 +42,9 @@ exports.findAll = {
 
 //Method for creating a new user
 exports.addNewUser = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function (req, res) {
     const user = new User(req.payload);
     user.save().then(newUser => {
@@ -47,7 +57,9 @@ exports.addNewUser = {
 
 //Method to delete one User
 exports.deleteOne = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function (req, res) {
     User.remove({_id: req.params.id}).then(user => {
       res(user).code(204);// 204: No content, ensures deletion
@@ -59,7 +71,9 @@ exports.deleteOne = {
 
 //Method to delete all user
 exports.deleteAll = {
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+  },
   handler: function(req, res) {
     User.remove({}).then(err => {
       res().code(204);
@@ -67,4 +81,22 @@ exports.deleteAll = {
       res(Boom.badImplementation('Error removing users: ' + err));
     });
   },
+};
+
+exports.authenticate = {
+  auth: false,
+  handler: function (request, reply) {
+    const user = request.payload;
+    User.findOne({ email: user.email }).then(foundUser => {
+      if (foundUser && foundUser.password === user.password) {
+        const token = utils.createToken(foundUser);
+        reply({ success: true, token: token }).code(201);
+      } else {
+        reply({ success: false, message: 'Authentication failed. User not found.' }).code(201);
+      }
+    }).catch(err => {
+      reply(Boom.notFound('internal db failure'));
+    });
+  },
+
 };

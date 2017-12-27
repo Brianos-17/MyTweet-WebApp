@@ -1,0 +1,81 @@
+{
+  "myTweetWebService": "http://localhost:4000",
+  "users": [
+    {
+      "firstName": "Homer",
+      "lastName": "Simpson",
+      "email": "homer@simpson.com",
+      "password": "secret",
+      "admin": false
+    },
+    {
+      "firstName": "Marge",
+      "lastName": "Simpson",
+      "email": "marge@simpson.com",
+      "password": "secret",
+      "admin": false
+    },
+    {
+      "firstName": "Lisa",
+      "lastName": "Simpson",
+      "email": "lisa@simpson.com",
+      "password": "secret",
+      "admin": false
+    },
+    {
+      "firstName": "Maggie",
+      "lastName": "Simpson",
+      "email": "magie@simpson.com",
+      "password": "secret",
+      "admin": false
+    },
+    {
+      "firstName": "Bart",
+      "lastName": "Simpson",
+      "email": "bart@simpson.com",
+      "password": "secret",
+      "admin": true
+    }
+  ],
+  "tweets": [
+    {
+      "message": "1st Tweet",
+      "date": "2017-11-03 13:32:52"
+    },
+    {
+      "message": "2nd Tweet",
+      "date": "2017-11-03 20:13:06"
+    },
+    {
+      "message": "Test #1",
+      "date": "2017-11-03 20:13:11"
+    },
+    {
+      "message": "Test #2",
+      "date": "2017-11-03 20:13:15"
+    },
+    {
+      "message": "Hello from Homer",
+      "date": "2017-11-03 20:20:20"
+    },
+    {
+      "message": "Hello from Marge",
+      "date": "2017-11-03 20:20:20"
+    },
+    {
+      "message": "Hello from Maggie",
+      "date": "2017-11-03 22:22:22"
+    }
+  ],
+  "newUser": {
+    "firstName": "Ned",
+    "lastName": "Flanders",
+    "email": "ned@flanders.com",
+    "password": "secret",
+    "admin": false
+  },
+  "newTweet": {
+    "message": "This is a new tweet",
+    "date": "2017-11-04 20:00:00'"
+  }
+}

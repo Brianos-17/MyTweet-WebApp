@@ -9,6 +9,9 @@
 const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
+const saltrounds = 10; //Salts passwords 10 times
+const utils = require('../api/utils');
 
 exports.main = {
   auth: false,
@@ -35,11 +38,11 @@ exports.register = {
 
   validate: {
      payload: {
-       firstName: Joi.string().required(),
-       lastName: Joi.string().required(),
-       password: Joi.string().required(),
-       passwordValid: Joi.string().required().valid(Joi.ref('password')),
-       email: Joi.string().email().required(),
+       firstName: Joi.string().regex(/^[a-z]+$/i).required(), // Only allows letters, case insensitive
+       lastName: Joi.string().regex(/^[a-z]+$/i).required(), // Only allows letters, case insensitive
+       password: Joi.string().alphanum().min(5).required(), // Password can only contain alpha-numeric characters and must be at least 5 characters long
+       passwordValid: Joi.string().required().valid(Joi.ref('password')), // Must match password
+       email: Joi.string().email().required(), // Must be a valid email format
      },
     options: {
        abortEarly: false,
@@ -56,17 +59,21 @@ exports.register = {
   handler: function(req, res) {
     const userType = req.params.userType;
     const user = new User(req.payload);
-    user.save().then(newUser => {
-      console.log('New user registered: ' + newUser.firstName +
-          ' ' + newUser.lastName);
-      if(userType === 'admin') {
-        res.redirect('/adminDashboard')
-      } else{
-        res.redirect('/login');
-      }
-    }).catch(err => {
-      res.redirect('/');
-      console.log('Error registering new user: ' + err);
+    const plaintextPassword = user.password;
+    bcrypt.hash(plaintextPassword, saltrounds, function(err, hash) {
+      user.password = hash;
+      user.save().then(newUser => {
+        console.log('New user registered: ' + newUser.firstName +
+            ' ' + newUser.lastName);
+        if(userType === 'admin') {
+          res.redirect('/adminDashboard')
+        } else{
+          res.redirect('/login');
+        }
+      }).catch(err => {
+        res.redirect('/');
+        console.log('Error registering new user: ' + err);
+      });
     });
   },
 };
@@ -85,7 +92,7 @@ exports.authenticate = {
 
   validate: {
     payload: {
-      password: Joi.string().required(),
+      password: Joi.string().alphanum().min(5).required(),
       email: Joi.string().email().required(),
     },
     options: {
@@ -102,22 +109,24 @@ exports.authenticate = {
   handler: function (req, res) {
     const user = req.payload;
     User.findOne({email: user.email}).then(foundUser => {
-      if (foundUser && foundUser.password === user.password) {
-        req.cookieAuth.set({
-          loggedIn: true,
-          loggedInUser: user.email,//assigns the users email as their cookie authentication
-        });
-        if (foundUser.admin){
-          res.redirect('/adminDashboard');
-        } else {
-          res.redirect('/dashboard');
+      bcrypt.compare(user.password, foundUser.password, function(err, isValid) {
+        if(isValid) {
+          // const token = utils.createToken(foundUser);
+          // console.log(token);
+          req.cookieAuth.set({
+            loggedIn: true,
+            loggedInUser: user.email,//assigns the users email as their cookie authentication
+          });
+          if (foundUser.admin){
+            res.redirect('/adminDashboard');
+          } else {
+            res.redirect('/dashboard');
+          }
         }
-      } else {
-        res.redirect('/login');
-      }
+      });
     }).catch(err => {
       console.log('Error logging in: ' + err);
-      res.redirect('/');
+      res.redirect('/login');
     });
   },
 };
@@ -148,10 +157,10 @@ exports.updateAccount = {
 
   validate: {
     payload: {
-      firstName: Joi.string().required(),
-      lastName: Joi.string().required(),
-      password: Joi.string().required(),
-      passwordValid: Joi.string().required().valid(Joi.ref('password')),//must be the same as password
+      firstName: Joi.string().regex(/^[a-z]+$/i).required(),
+      lastName: Joi.string().regex(/^[a-z]+$/i).required(),
+      password: Joi.string().alphanum().min(5).required(),
+      passwordValid: Joi.string().required().valid(Joi.ref('password')),
       email: Joi.string().email().required(),
     },
     options: {

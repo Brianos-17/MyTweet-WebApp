@@ -1,6 +1,6 @@
 
 {{#each tweet}}
-    <table class="ui fixed center aligned table">
+    <table class="ui fixed table">
         <thead>
         <tr>
             <th class="one wide"> User </th>
@@ -12,10 +12,15 @@
         <div class="ui bulleted list">
             <tr>
                 <td>
-                    <img class="ui avatar image" src="/getProfilePic/{{user._id}}"
+                    <img class="ui tiny image" src="/getProfilePic/{{user._id}}"
                          onerror="this.src = 'http://res.cloudinary.com/dlswdhwpl/image/upload/v1503513638/accounts-page_vs2sh7.png';">
                 </td>
-                <td>{{message}}</td>
+                <td>
+                    <p>{{message}}</p>
+                    {{#if img.data}}
+                        <p><img class="ui medium image" src="/getTweetImg/{{id}}" /></p>
+                    {{/if}}
+                </td>
                 <td>{{date}}</td>
             </tr>
         </div>

@@ -10,12 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "boom": "^6.0.0",
     "handlebars": "^4.0.10",
     "hapi": "^16.6.2",
     "hapi-auth-cookie": "^7.0.0",
+    "hapi-auth-jwt2": "^7.3.0",
     "inert": "^4.2.1",
     "joi": "^13.0.0",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
     "mongoose": "^4.12.2",
     "mongoose-seeder": "^1.2.1",
     "vision": "^4.1.1"

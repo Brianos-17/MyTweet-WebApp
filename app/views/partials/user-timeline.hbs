@@ -26,7 +26,9 @@
                 {{/if}}
                 <td>
                     <p>{{message}}</p>
-                        <p><img class="ui medium image" src="/getTweetImg/{{_id}}"/></p>
+                    {{#if img.data}}
+                        <p><img class="ui medium image" src="/getTweetImg/{{id}}" /></p>
+                    {{/if}}
                 </td>
                 <td>{{date}}</td>
                 {{#unless ../globalTimeline}}

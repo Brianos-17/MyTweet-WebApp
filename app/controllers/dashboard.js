@@ -74,7 +74,7 @@ exports.addTweet = {
 
     payload: {
       message: Joi.string().max(140).required(),
-      img: Joi.allow(null),
+      img: Joi.allow(null), // Allows users to include no image
       maxBytes: 209715200, // Validates the payload image via size
       output: 'stream',
       parse: true,
@@ -204,7 +204,7 @@ exports.viewUser = {
     let following = false;
     User.findOne({_id: userId}).then(foundUser => {
       User.find({_id: foundUser.following}).then(followedUser => {
-        Tweet.find({user: foundUser._id}).sort({date: -1}).then(tweets => {
+        Tweet.find({user: foundUser._id}).populate('user').sort({date: -1}).then(tweets => {
           if (followedUser.length > 0){
             following = true;
           }

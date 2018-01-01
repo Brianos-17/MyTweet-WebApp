@@ -10,9 +10,7 @@ const Boom = require('boom');
 
 //Method to find one tweet
 exports.findOne = {
-  auth: {
-    strategy: 'jwt',
-  },
+  auth: false,
   handler: function(req, res) {
     Tweet.findOne({_id: req.params.id}).then(tweet => {
       if(tweet !== null){
@@ -27,9 +25,7 @@ exports.findOne = {
 
 //Method to find all tweets
 exports.findAll = {
-  auth: {
-    strategy: 'jwt',
-  },
+  auth: false,
   handler: function(req, res) {
     Tweet.find({}).exec().then(tweets => {
       res(tweets);
@@ -41,9 +37,7 @@ exports.findAll = {
 
 //Method to create a new tweet
 exports.addNewTweet = {
-  auth: {
-    strategy: 'jwt',
-  },
+  auth: false,
   handler: function(req, res) {
     const tweet = new Tweet(req.payload);
     tweet.save().then(newTweet => {
@@ -56,9 +50,7 @@ exports.addNewTweet = {
 
 //Method to delete one tweet
 exports.deleteOne = {
-  auth: {
-    strategy: 'jwt',
-  },
+  auth: false,
   handler: function(req, res) {
     Tweet.remove({_id: req.params.id}).then(tweet => {
       res(tweet).code(204);//204: code for no content, ensures deletion
@@ -70,9 +62,7 @@ exports.deleteOne = {
 
 //Method to delete all tweets
 exports.deleteAll = {
-  auth: {
-    strategy: 'jwt',
-  },
+  auth: false,
   handler: function(req, res) {
     Tweet.remove({}).then(err => {
       res().code(204);

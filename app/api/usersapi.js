@@ -6,6 +6,7 @@
  */
 
 const User = require('../models/user');
+const Tweet = require('../models/tweet');
 const Boom = require('boom');
 const utils = require('./utils.js');
 
@@ -98,5 +99,20 @@ exports.authenticate = {
       reply(Boom.notFound('internal db failure'));
     });
   },
+};
 
+exports.getUserTweets = {
+  auth: false,
+  handler: function (req, res) {
+    const user = req.payload;
+    User.findOne({ email: user.email }).then(foundUser => {
+      Tweet.find({ userId: foundUser._id }).then(foundTweets => {
+        if(foundTweets != null){
+          res(foundTweets);
+        } res(Boom.notFound("No tweets found"));
+      })
+    }).catch(err => {
+      res(Boom.notFound('User id not found: ' + err));
+      });
+  },
 };

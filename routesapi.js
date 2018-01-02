@@ -7,7 +7,7 @@ module.exports = [
   { method: 'POST', path: '/api/users', config: UserApi.addNewUser },
   { method: 'DELETE', path: '/api/users/{id}', config: UserApi.deleteOne },
   { method: 'DELETE', path: '/api/users', config: UserApi.deleteAll },
-  { method: 'GET', path: '/api/users/authenticate', config: UserApi.authenticate },
+  { method: 'POST', path: '/api/users/authenticate', config: UserApi.authenticate },
   { method: 'GET',  path: '/api/users/{user}/tweets', config: UserApi.getUserTweets },
 
   { method: 'GET', path: '/api/tweet', config: TweetApi.findAll },

@@ -87,7 +87,7 @@ exports.authenticate = {
     User.findOne({ email: email }).then(foundUser => {
       bcrypt.compare(password, foundUser.password, function (err, isValid) {
         if (isValid) {
-          reply(foundUser).code(201);
+          reply(foundUser._id).code(201);
         } else {
           reply(Boom.badImplementation('Error removing users: ' + err));
         }

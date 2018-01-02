@@ -9,6 +9,8 @@ const User = require('../models/user');
 const Tweet = require('../models/tweet');
 const Boom = require('boom');
 const utils = require('./utils.js');
+const bcrypt = require('bcrypt');
+const saltrounds = 10; //Salts passwords 10 times
 
 //Method for finding one user
 exports.findOne = {
@@ -42,10 +44,13 @@ exports.addNewUser = {
   auth: false,
   handler: function (req, res) {
     const user = new User(req.payload);
-    user.save().then(newUser => {
-      res(newUser).code(201);//201 HTTP code for resource created
-    }).catch(err => {
-      res(Boom.badImplementation('Error creating new user: ' + err));
+    bcrypt.hash(user.password, saltrounds, function(err, hash) {
+      user.password = hash;
+      user.save().then(newUser => {
+        res(newUser).code(201);//201 HTTP code for resource created
+      }).catch(err => {
+        res(Boom.badImplementation('Error creating new user: ' + err));
+      });
     });
   },
 };
@@ -80,13 +85,15 @@ exports.authenticate = {
     const email = request.payload.email;
     const password = request.payload.password;
     User.findOne({ email: email }).then(foundUser => {
-      if (foundUser && foundUser.password === password) {
-        reply(foundUser).code(201);
-      } else {
-        reply({ success: false, message: 'Authentication failed. User not found.' }).code(201);
-      }
+      bcrypt.compare(password, foundUser.password, function (err, isValid) {
+        if (isValid) {
+          reply(foundUser).code(201);
+        } else {
+          reply(Boom.badImplementation('Error removing users: ' + err));
+        }
+      });
     }).catch(err => {
-      reply(Boom.notFound('internal db failure'));
+      reply(Boom.notFound('internal db failure ' + err));
     });
   },
 };

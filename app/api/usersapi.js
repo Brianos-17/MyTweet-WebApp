@@ -77,11 +77,11 @@ exports.deleteAll = {
 exports.authenticate = {
   auth: false,
   handler: function (request, reply) {
-    const user = request.payload;
-    User.findOne({ email: user.email }).then(foundUser => {
-      if (foundUser && foundUser.password === user.password) {
-        const token = utils.createToken(foundUser);
-        reply({ success: true, token: token }).code(201);
+    const email = request.payload.email;
+    const password = request.payload.password;
+    User.findOne({ email: email }).then(foundUser => {
+      if (foundUser && foundUser.password === password) {
+        reply(foundUser).code(201);
       } else {
         reply({ success: false, message: 'Authentication failed. User not found.' }).code(201);
       }

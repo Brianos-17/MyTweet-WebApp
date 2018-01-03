@@ -105,7 +105,7 @@ exports.getUserTweets = {
     console.log(id);
     User.findOne({_id: id}).then(foundUser => {
       console.log(foundUser);
-      Tweet.find({userId: foundUser._id}).then(foundTweets => {
+      Tweet.find({user: foundUser._id}).then(foundTweets => {
         console.log(foundTweets);
         res(foundTweets);
       }).catch(err => {

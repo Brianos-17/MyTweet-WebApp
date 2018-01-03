@@ -101,8 +101,8 @@ exports.authenticate = {
 exports.getUserTweets = {
   auth: false,
   handler: function (req, res) {
-    const user = req.payload;
-    User.findOne({ email: user.email }).then(foundUser => {
+    const id = req.payload;
+    User.findOne({ _id: id }).then(foundUser => {
       Tweet.find({ userId: foundUser._id }).then(foundTweets => {
         if(foundTweets != null){
           res(foundTweets);

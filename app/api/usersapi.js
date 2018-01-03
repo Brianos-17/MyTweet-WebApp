@@ -102,14 +102,15 @@ exports.getUserTweets = {
   auth: false,
   handler: function (req, res) {
     const id = req.params.id;
-    User.findOne({ _id: id }).then(foundUser => {
-      Tweet.find({ userId: foundUser._id }).then(foundTweets => {
-        if(foundTweets != null){
-          res(foundTweets);
-        } res(Boom.notFound("No tweets found"));
-      })
-    }).catch(err => {
-      res(Boom.notFound('User id not found: ' + err));
+    console.log(id);
+    User.findOne({_id: id}).then(foundUser => {
+      console.log(foundUser);
+      Tweet.find({userId: foundUser._id}).then(foundTweets => {
+        console.log(foundTweets);
+        res(foundTweets);
+      }).catch(err => {
+        res(Boom.notFound('User id not found: ' + err));
       });
+    });
   },
 };

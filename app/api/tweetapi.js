@@ -27,7 +27,7 @@ exports.findOne = {
 exports.findAll = {
   auth: false,
   handler: function(req, res) {
-    Tweet.find({}).exec().then(tweets => {
+    Tweet.find({}).sort({date: -1}).then(tweets => {
       res(tweets);
     }).catch(err => {
       res(Boom.badImplementation('Error accessing database: ' + err));
@@ -70,4 +70,17 @@ exports.deleteAll = {
       res(Boom.badImplementation('Error deleting tweets: ' + err));
     });
   },
+};
+
+exports.editTweet = {
+  auth: false,
+  handler: function(req, res) {
+    const newTweet = req.payload;
+    const tweetId = req.params.id;
+    Tweet.find({_id: tweetId}).then(foundTweet => {
+      foundTweet.memberId = newTweet.message;
+    }).catch(err => {
+      res(Boom.notFound('Error finding tweet id ' + err));
+    })
+  }
 };

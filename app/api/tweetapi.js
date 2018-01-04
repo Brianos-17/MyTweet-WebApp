@@ -77,6 +77,7 @@ exports.editTweet = {
   handler: function(req, res) {
     const newTweet = req.payload;
     const tweetId = req.params.id;
+    console.log(newTweet, tweetId);
     Tweet.find({_id: tweetId}).then(foundTweet => {
       foundTweet.memberId = newTweet.message;
     }).catch(err => {

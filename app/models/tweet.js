@@ -14,6 +14,13 @@ const tweetSchema = mongoose.Schema({
   img: {
     data: Buffer,
     contentType: String,
+  },
+  address: String,
+  marker: {
+    coords: {
+      lat: Number,
+      lng: Number,
+    }
   }
 });
 

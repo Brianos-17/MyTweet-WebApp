@@ -103,7 +103,7 @@ exports.getUserTweets = {
   handler: function (req, res) {
     const id = req.params.id;
     console.log(id);
-    User.findOne({_id: id}).then(foundUser => {
+    User.findOne({_id: id}).sort({date: -1}).then(foundUser => {
       console.log(foundUser);
       Tweet.find({user: foundUser._id}).then(foundTweets => {
         console.log(foundTweets);

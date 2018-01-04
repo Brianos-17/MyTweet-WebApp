@@ -27,7 +27,7 @@ exports.findOne = {
 exports.findAll = {
   auth: false,
   handler: function(req, res) {
-    Tweet.find({}).exec().then(tweets => {
+    Tweet.find({}).sort({date: -1}).then(tweets => {
       res(tweets);
     }).catch(err => {
       res(Boom.badImplementation('Error accessing database: ' + err));

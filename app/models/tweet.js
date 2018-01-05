@@ -18,8 +18,8 @@ const tweetSchema = mongoose.Schema({
   address: String,
   marker: {
     coords: {
-      lat: Number,
-      lng: Number,
+      latitude: Number,
+      longitude: Number,
     }
   }
 });

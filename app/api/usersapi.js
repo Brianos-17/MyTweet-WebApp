@@ -114,3 +114,21 @@ exports.getUserTweets = {
     });
   },
 };
+
+exports.getFollowedUserTweets = {
+  auth: false,
+  handler: function (req, res) {
+    const id = req.params.id;
+    console.log(id);
+    User.findOne({_id: id}).then(foundUser => {
+      User.find({_id: foundUser.following}).then(followedUsers => {
+        Tweet.find({user: followedUsers}).sort({date: -1}).then(foundTweets => {
+          res(foundTweets);
+        })
+      })
+    }).catch(err => {
+      res(Boom.notFound('Error finding tweets: ' + err));
+    })
+  }
+};
+
